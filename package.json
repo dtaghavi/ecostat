@@ -1,0 +1,15 @@
+{
+  "name": "gpa-io",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "leancloud-storage": "^3.11.1",
+    "leanengine": "^3.3.2"
+  },
+  "engines": {
+    "node": "^11.7.0"
+  }
+}
