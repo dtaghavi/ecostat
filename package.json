@@ -1,5 +1,5 @@
 {
-  "name": "gpa-io",
+  "name": "ecostat",
   "scripts": {
     "start": "node server.js"
   },
@@ -10,6 +10,6 @@
     "leanengine": "^3.3.2"
   },
   "engines": {
-    "node": "^11.7.0"
+    "node": "^11.10.0"
   }
 }

@@ -7,13 +7,17 @@ new Vue({
     template: `
         <div>
             <section>
-                <a href="/auth?signup=true">
-                    <button id="sign-up">Create Account <i class="fas fa-chevron-right"></i></button>
-                </a>
+                <img id="logo" src="../images/logo.png">
+                <img id="tree" src="../images/tree.png">
             </section>
             <section>
                 <a href="/auth">
-                    <button id="log-in">Log in</button>
+                    <button id="sign-up">Sign In <i class="fas fa-chevron-right"></i></button>
+                </a>
+            </section>
+            <section>
+                <a href="/auth?signup=true">
+                    <button id="log-in">Create Account</button>
                 </a>
             </section>
         </div>
@@ -22,7 +26,7 @@ new Vue({
         let vm = this;
         Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().then(authenticated => authenticated ? user : null) : null).then(user => {
             if (user) {
-                location.href = '/dashboard';
+                location.href = '/home';
             }
         });
     }

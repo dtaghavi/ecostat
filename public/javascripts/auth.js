@@ -4,23 +4,28 @@ AV.init({
 });
 Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().then(authenticated => authenticated ? user : null) : null).then(user => {
     if (user) {
-        location.href = '/dashboard';
+        location.href = '/home';
     }
     else {
         new Vue({
             el: '#main',
             template: `
-                <div id="account">
+                <div>
                     <section>
-                        <h1>{{ creatingAccount ? 'Create Account' : 'Log in' }}</h1>
+                        <img id="logo" src="../images/logo.png">
+                    </section>
+                    <section>
+                        <p id="status">{{ creatingAccount ? 'Create Account' : 'Sign In' }}</p>
                         <input v-if="creatingAccount" id="first-name" placeholder="First Name" v-model="firstName">
                         <input v-if="creatingAccount" id="last-name" placeholder="Last Name" v-model="lastName">
                         <input v-if="creatingAccount" placeholder="Zip Code" v-model="zipCode">
                         <input type="email" placeholder="Email" v-model="email">
                         <input type="password" placeholder="Password" v-model="password">
-                        <button @click="go();">{{ creatingAccount ? 'Create Account' : 'Log in' }}</button>
-                        <button class="minor-button" @click="password = ''; creatingAccount = !creatingAccount;">{{ creatingAccount ? 'Back to Log in' : 'Create Account' }}</button>
-                        <button class="minor-button" @click="requestPasswordReset();">Reset Password</button>
+                        <button @click="go();">{{ creatingAccount ? 'Create Account' : 'Sign In' }}</button>
+                        <button id="reset" class="minor-button" @click="requestPasswordReset();">Reset Password</button>
+                    </section>
+                    <section>
+                        <button id="create" class="minor-button" @click="password = ''; creatingAccount = !creatingAccount;">{{ creatingAccount ? 'Back to Log in' : 'Create Account' }}</button>
                     </section>
                 </div>
             `,
@@ -53,7 +58,7 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                             user.set('lastName', vm.lastName);
                             user.set('zipCode', vm.zipCode);
                             user.signUp().then(function () {
-                                location.href = '/dashboard';
+                                location.href = '/home';
                             }, function (error) {
                                 if (error.code === 125) {
                                     alert('The email address you entered is not a valid one. Please check your input.');
@@ -73,7 +78,7 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                         }
                         else {
                             AV.User.logIn(vm.email, vm.password).then(function () {
-                                location.href = '/dashboard';
+                                location.href = '/home';
                             }, function (error) {
                                 if (error.code === 210) {
                                     alert('The email or password you provided is incorrect. Please try again.');

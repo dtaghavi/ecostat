@@ -1,13 +1,14 @@
 * {
+    -webkit-appearance: none;
     box-sizing: border-box;
     border-radius: 0;
-    transition: all 0.2s ease;
     font-family: sans-serif;
+    transition: all 0.2s ease;
 }
 body {
     margin: 0;
     min-height: 100vh;
-    background: linear-gradient(-135deg, rgb(101, 162, 138), rgb(166, 214, 158));
+    background: linear-gradient(-135deg, #49a187, #9edd99);
 }
 a {
     text-decoration: none;
@@ -16,17 +17,38 @@ a {
 section {
     text-align: center;
 }
+button {
+    border: none;
+    background: none;
+}
+#logo {
+    width: 128px;
+    display: block;
+    margin: 128px auto 0 auto;
+    left: 0;
+    right: 0;
+}
+#tree {
+    width: 128px;
+    display: block;
+    margin: 48px auto 0 auto;
+    left: 0;
+    right: 0;
+}
 #sign-up {
     margin-top: 48px;
-    width: 192px;
-    height: 64px;
-    background-color: rgba(255, 255, 255, 0.5);
-    font-size: 14pt;
-    color: #fff;
+    width: 144px;
+    height: 56px;
+    background-color: rgba(255, 255, 255, 0.4);
+    font-size: 12pt;
+    color: rgba(255, 255, 255, 0.8);
     border-radius: 32px;
+}
+#sign-up i {
+    margin-left: 12px;
 }
 #log-in {
     margin-top: 48px;
-    color: #fff;
-    font-size: 14pt;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12pt;
 }

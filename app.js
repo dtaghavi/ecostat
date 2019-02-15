@@ -13,7 +13,5 @@ app.enable('trust proxy');
 app.use(AV.Cloud.HttpsRedirect());
 app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));
-app.use('/verify', require('./routes/verify'));
-app.use('/reset', require('./routes/reset'));
 app.use('/*', require('./routes/main'));
 module.exports = app;

@@ -1,46 +1,55 @@
 * {
+    -webkit-appearance: none;
     box-sizing: border-box;
     border-radius: 0;
-    transition: all 0.2s ease;
     font-family: sans-serif;
+    transition: all 0.2s ease;
 }
 body {
     margin: 0;
     min-height: 100vh;
-    background: linear-gradient(-135deg, rgb(101, 162, 138), rgb(166, 214, 158));
-}
-h1 {
-    text-align: center;
-    color: white;
+    background: linear-gradient(-135deg, #49a187, #9edd99);
 }
 a {
     text-decoration: none;
     color: currentColor;
 }
 section {
-    padding: 0 48px;
+    padding: 0 64px;
 }
 input {
     display: block;
     margin-bottom: 12px;
-    border-radius: 18px;
+    border-radius: 8px;
     height: 36px;
     padding: 8px;
     width: 100%;
     border: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 12pt;
 }
 button {
     display: block;
     margin: auto;
     margin-bottom: 12px;
-    border-radius: 24px;
-    height: 48px;
+    border-radius: 8px;
+    height: 36px;
     padding: 8px;
-    width: 50%;
+    width: 100%;
     border: none;
-    background-color:rgba(255, 255, 255, 0.5);
-    color: white;
+    background-color:rgba(98, 160, 143, 1);
+    color: rgba(255, 255, 255, 0.8);
     font-size: 12pt;
+}
+#logo {
+    width: 128px;
+    display: block;
+    margin: 128px auto 64px auto;
+    left: 0;
+    right: 0;
+}
+#status {
+    color: rgba(255, 255, 255, 0.8);
 }
 #first-name {
     display: inline-block;
@@ -53,5 +62,12 @@ button {
 }
 button.minor-button {
     background-color: rgba(255, 255, 255, 0);
-    height: 12px;
+}
+#reset {
+    text-align: right;
+}
+#create {
+    position: absolute;
+    bottom: 48px;
+    left: 0;
 }
