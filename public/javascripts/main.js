@@ -4,11 +4,17 @@ AV.init({
 });
 const AppHome = {
     template: `
-        <section>
+        <div>
             <img id="home__logo" src="../images/logo.png">
-            <img id="home__tree" src="../images/tree.png">
-            <p @click="AV.User.logOut(); location.href='/auth';">Click here to log out.</p>
-        </section>
+            <div id="home__circle">
+                <svg id="home__circle__ring">
+                    <circle cx="50%" cy="50%" r="50%"></circle>
+                </svg>
+                <img id="home__circle__tree" src="../images/tree.png">
+            </div>
+            <div id="home__card">
+            </div>
+        </div>
     `
 };
 const AppSocial = {

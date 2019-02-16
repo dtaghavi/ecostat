@@ -15,13 +15,14 @@ a {
     color: currentColor;
 }
 nav {
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     height: 64px;
     background-color: rgba(240, 240, 240, 1);
     border-top: 1px solid rgba(220, 220, 220, 1);
+    z-index: 1;
 }
 nav ul {
     margin: 12px 0 0 0;
@@ -47,16 +48,48 @@ nav li p span {
     color: grey;
 }
 #home__logo {
-    width: 160px;
+    width: 120px;
     display: block;
     margin: 32px auto 0 auto;
     left: 0;
     right: 0;
 }
-#home__tree {
-    width: 160px;
-    display: block;
+#home__circle {
+    height: 312px;
+    width: 312px;
+    border-radius: 50%;
+    background-color: #fff;
     margin: 48px auto 0 auto;
     left: 0;
     right: 0;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+#home__circle__ring {
+    position: relative;
+    top: 6px;
+    left: 6px;
+    width: 300px;
+    height: 300px;
+    overflow: visible;
+}
+#home__circle__ring circle {
+    fill: #fff;
+    stroke: rgba(179, 220, 188, 1);
+    stroke-width: 10px;
+    stroke-dasharray: 706.86 235.62; /* 942.478 */
+    stroke-dashoffset: 589.049;
+}
+#home__circle__tree {
+    position: absolute;
+    width: 160px;
+    margin: 30px auto 0 auto;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+#home__card {
+    position: relative;
+    top: -60px;
+    background-color: #fff;
+    min-height: 50vh;
 }
