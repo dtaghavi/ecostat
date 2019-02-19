@@ -15,9 +15,8 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                         <img id="logo" src="../images/logo.png">
                     </section>
                     <section>
-                        <p id="status">{{ creatingAccount ? 'Create Account' : 'Sign In' }}</p>
-                        <input v-if="creatingAccount" id="first-name" placeholder="First Name" v-model="firstName">
-                        <input v-if="creatingAccount" id="last-name" placeholder="Last Name" v-model="lastName">
+                        <input v-if="creatingAccount" id="first-name" placeholder="First" v-model="firstName">
+                        <input v-if="creatingAccount" id="last-name" placeholder="Last" v-model="lastName">
                         <input v-if="creatingAccount" placeholder="Zip Code" v-model="zipCode">
                         <input type="email" placeholder="Email" v-model="email">
                         <input type="password" placeholder="Password" v-model="password">
