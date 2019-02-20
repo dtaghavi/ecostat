@@ -21,28 +21,37 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                         <input type="email" placeholder="Email" v-model="email">
                         <input type="password" placeholder="Password" v-model="password">
                         <button @click="go();">{{ creatingAccount ? 'Create Account' : 'Sign In' }}</button>
-                        <button id="reset" class="minor-button" @click="requestPasswordReset();">Reset Password</button>
+                        <button id="reset" class="minor" @click="requestPasswordReset();">Reset Password</button>
                     </section>
                     <section>
-                        <button id="create" class="minor-button" @click="password = ''; creatingAccount = !creatingAccount;">{{ creatingAccount ? 'Back to Log in' : 'Create Account' }}</button>
+                        <button id="create" class="minor" @click="password = ''; creatingAccount = !creatingAccount;">{{ creatingAccount ? 'Sign In' : 'Create Account' }}</button>
                     </section>
                 </div>
             `,
             data: function () {
                 return {
                     creatingAccount: location.search.match(/signup=true/) ? true : false,
-                    email: '',
-                    password: '',
                     firstName: '',
                     lastName: '',
-                    zipCode: ''
+                    zipCode: '',
+                    email: '',
+                    password: ''
                 };
             },
             methods: {
                 go: function () {
                     let vm = this;
                     if (vm.creatingAccount) {
-                        if (!vm.email) {
+                        if (!vm.firstName) {
+                            alert('Please enter your first name.');
+                        }
+                        else if (!vm.lastName) {
+                            alert('Please enter your last name.');
+                        }
+                        else if (!vm.zipCode) {
+                            alert('Please enter your zip code.');
+                        }
+                        else if (!vm.email) {
                             alert('Please enter your email address.');
                         }
                         else if (vm.password.length < 6) {
@@ -51,11 +60,11 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                         else {
                             let user = new AV.User();
                             user.setUsername(vm.email);
-                            user.setEmail(vm.email);
-                            user.setPassword(vm.password);
                             user.set('firstName', vm.firstName);
                             user.set('lastName', vm.lastName);
                             user.set('zipCode', vm.zipCode);
+                            user.setEmail(vm.email);
+                            user.setPassword(vm.password);
                             user.signUp().then(function () {
                                 location.href = '/home';
                             }, function (error) {

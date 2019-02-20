@@ -35,7 +35,7 @@ button {
     left: 0;
     right: 0;
 }
-#sign-up {
+#sign-in {
     margin-top: 48px;
     width: 144px;
     height: 56px;
@@ -44,10 +44,10 @@ button {
     color: rgba(255, 255, 255, 0.8);
     border-radius: 32px;
 }
-#sign-up i {
+#sign-in i {
     margin-left: 12px;
 }
-#log-in {
+#create-account {
     margin-top: 48px;
     color: rgba(255, 255, 255, 0.8);
     font-size: 12pt;

@@ -99,13 +99,6 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                         ]
                     };
                 },
-                computed: {
-
-                },
-                created: function () {
-                    let vm = this;
-
-                },
                 router
             });
         });

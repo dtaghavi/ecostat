@@ -48,9 +48,6 @@ button {
     left: 0;
     right: 0;
 }
-#status {
-    color: rgba(255, 255, 255, 0.8);
-}
 #first-name {
     display: inline-block;
     width: calc((100% - 12px)/2);
@@ -58,9 +55,9 @@ button {
 #last-name {
     display: inline-block;
     margin-left: 6px;
-    width: calc((100% - 12px)/2);
+    width: calc((100% - 12px) / 2);
 }
-button.minor-button {
+button.minor {
     background-color: rgba(255, 255, 255, 0);
 }
 #reset {

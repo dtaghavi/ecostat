@@ -12,12 +12,12 @@ new Vue({
             </section>
             <section>
                 <a href="/auth">
-                    <button id="sign-up">Sign In <i class="fas fa-chevron-right"></i></button>
+                    <button id="sign-in">Sign In <i class="fas fa-chevron-right"></i></button>
                 </a>
             </section>
             <section>
                 <a href="/auth?signup=true">
-                    <button id="log-in">Create Account</button>
+                    <button id="create-account">Create Account</button>
                 </a>
             </section>
         </div>
