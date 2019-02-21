@@ -25,7 +25,7 @@ nav {
     z-index: 1;
 }
 nav ul {
-    margin: 12px 0 0 0;
+    margin: 4px 0 0 0;
     padding: 0;
 }
 nav li {
@@ -33,19 +33,19 @@ nav li {
     width: 25%;
     text-align: center;
 }
-nav li.active span {
-    color: #49a187;
+nav li img {
+    width: 32px;
+    height: 32px;
 }
 nav li p {
     margin: 0;
 }
-nav li p i {
-    font-size: 24px;
-    margin-bottom: 4px;
-}
 nav li p span {
     font-size: 12px;
     color: grey;
+}
+nav li.active span {
+    color: #49a187;
 }
 #home__logo {
     width: 120px;
@@ -72,12 +72,20 @@ nav li p span {
     height: 300px;
     overflow: visible;
 }
-#home__circle__ring circle {
+#home__circle__ring__total {
     fill: #fff;
     stroke: rgba(179, 220, 188, 1);
     stroke-width: 10px;
     stroke-dasharray: 706.86 235.62; /* 942.478 */
     stroke-dashoffset: 589.049;
+}
+#home__circle__ring__my {
+    fill: none;
+    stroke: #49a187;
+    stroke-width: 10px;
+    stroke-dasharray: 606.86 335.62; /* 942.478 */
+    stroke-dashoffset: 589.049;
+    stroke-linecap: round;
 }
 #home__circle__tree {
     position: absolute;
@@ -89,7 +97,148 @@ nav li p span {
 }
 #home__card {
     position: relative;
-    top: -60px;
+    top: -72px;
     background-color: #fff;
     min-height: 50vh;
+}
+#home__card__score {
+    padding-top: 24px;
+    text-align: center;
+    color: #49a187;
+}
+#home__card__score__my {
+    font-size: 24pt;
+}
+#home__card__score__total {
+    font-size: 16pt;
+}
+#home__card__info {
+    margin: 0 12px;
+    font-size: 14pt;
+}
+.home__card__item {
+    position: relative;
+    border: 1px solid #eee;
+    margin: 8px 12px;
+    height: 64px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+.home__card__item__icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 48px;
+    text-align: center;
+    line-height: 64px;
+}
+.home__card__item__info {
+    position: absolute;
+    top: 0;
+    right: 64px;
+    bottom: 0;
+    left: 48px;
+}
+.home__card__item__info__category {
+    color: #49a187;
+    margin: 12px 0 0 0;
+}
+.home__card__item__info__amount {
+    font-size: 9pt;
+    margin: 4px 0 0 0;
+    color: #666;
+}
+.home__card__item__score {
+    position: absolute;
+    top: 16px;
+    right: 8px;
+    bottom: 0;
+    width: 64px;
+    color: #49a187;
+}
+.home__card__item__score__my {
+    font-size: 18pt;
+}
+/* UTILITY DETAILS PAGES*/
+.home__utility__titlebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 64px;
+}
+.home__utility__titlebar__backarrow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 48px;
+    text-align: center;
+    line-height: 64px;
+    font-size: 32px;
+    color: white;
+}
+.home__utility__titlebar_title{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 18px;
+    text-align: center;
+    line-height: 64px;
+    color: white;
+}
+.home__utility__content {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    bottom: 64px;
+    left: 0;
+    background-color: #fff;
+}
+.home__utility__content__datebar
+{
+    position: relative;
+    margin: 12px 12px;
+    text-align: center;
+    border: 1px solid #49a187;
+    border-radius: 4px;
+    height: 36px;
+    overflow: hidden;
+}
+.home__utility__content__datebar span {
+    display: inline-block;
+    width: 25%;
+    line-height: 36px;
+}
+.home__utility__content__datebar span:nth-child(1),
+.home__utility__content__datebar span:nth-child(2),
+.home__utility__content__datebar span:nth-child(3) {
+    border-right: 1px solid #49a187;
+}
+.home__utility__content__datebar span.active {
+    background-color: rgba(73, 161, 135, 0.4);
+}
+.home__utility__content__graph {
+    position: relative;
+    height: 240px;
+}
+.home__utility__divider {
+    border: none;
+    height: 1px;
+    background-color: #eee;
+}
+.home__utility__content__bar {
+    height: 72px;
+}
+.home__utility__content__info {
+    display: table;
+}
+.home__utility__content__info div {
+    float: left;
+    width: 50%;
+    line-height: 36px;
 }
