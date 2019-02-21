@@ -70,11 +70,11 @@ const AppHomeElectric = {
     template: `
         <div>
             <div class="home__utility__titlebar">
-                <div class="home__utility__titlebar__backarrow" @click="router.push('/home');">
-                    <i class="fas fa-angle-left">
-                </div>
                 <div class="home__utility__titlebar_title">
                     <span>Energy Usage</span>
+                </div>
+                <div class="home__utility__titlebar__backarrow" @click="router.push('/home');">
+                    <i class="fas fa-angle-left">
                 </div>
             </div>
             <div class="home__utility__content">
