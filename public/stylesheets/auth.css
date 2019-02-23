@@ -44,7 +44,7 @@ button {
 }
 #logo {
     margin: 0 auto;
-    padding: 128px 0 48px 0;
+    padding: 96px 0 48px 0;
     text-align: center;
 }
 #logo img {
@@ -68,6 +68,6 @@ button.minor {
 #toggle {
     position: absolute;
     right: 0;
-    bottom: 48px;
+    bottom: 24px;
     left: 0;
 }
