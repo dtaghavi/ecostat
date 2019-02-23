@@ -5,63 +5,63 @@ AV.init({
 const AppHomeHome = {
     template: `
         <div>
-            <img id="home__logo" src="../images/logo.png">
-            <div id="home__circle">
-                <svg id="home__circle__ring">
-                    <circle id="home__circle__ring__total" cx="50%" cy="50%" r="50%"></circle>
-                    <circle id="home__circle__ring__my" cx="50%" cy="50%" r="50%"></circle>
-                </svg>
-                <img id="home__circle__tree" src="../images/tree.png">
+            <div id="home__logo">
+                <img src="../images/logo.png">
+            </div>
+            <div id="home__stat">
+                <div id="home__stat__circle">
+                    <svg id="home__stat__circle__ring">
+                        <circle id="home__stat__circle__ring__total" cx="50%" cy="50%" r="50%"></circle>
+                        <circle id="home__stat__circle__ring__my" cx="50%" cy="50%" r="50%"></circle>
+                    </svg>
+                    <img id="home__stat__circle__tree" src="../images/tree.png">
+                </div>
             </div>
             <div id="home__card">
-                <section>
-                    <p id="home__card__score">
-                        <span id="home__card__score__my">101</span>
-                        <span id="home__card__score__total">/ 120</span>
-                    </p>
-                </section>
-                <section>
-                    <p id="home__card__info">My Usage</p>
-                    <div class="home__card__item" @click="router.push('/home/electric');">
-                        <div class="home__card__item__icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <div class="home__card__item__info">
-                            <p class="home__card__item__info__category">Southern California Edison</p>
-                            <p class="home__card__item__info__amount">3.14 kWh</p>
-                        </div>
-                        <div class="home__card__item__score">
-                            <span class="home__card__item__score__my">32</span>
-                            <span class="home__card__item__score__total"> / 40</span>
-                        </div>
+                <p id="home__card__score">
+                    <span id="home__card__score__my">101</span>
+                    <span id="home__card__score__total">/ 120</span>
+                </p>
+                <p id="home__card__info">My Usage</p>
+                <div class="home__card__item" @click="router.push('/home/electric');">
+                    <div class="home__card__item__icon">
+                        <i class="fas fa-bolt"></i>
                     </div>
-                    <div class="home__card__item" @click="router.push('/home/gas');">
-                        <div class="home__card__item__icon">
-                            <i class="fas fa-fire"></i>
-                        </div>
-                        <div class="home__card__item__info">
-                            <p class="home__card__item__info__category">Southern California Gas</p>
-                            <p class="home__card__item__info__amount">3.14 Ccf</p>
-                        </div>
-                        <div class="home__card__item__score">
-                            <span class="home__card__item__score__my">40</span>
-                            <span class="home__card__item__score__total"> / 40</span>
-                        </div>
+                    <div class="home__card__item__info">
+                        <p class="home__card__item__info__category">Southern California Edison</p>
+                        <p class="home__card__item__info__amount">3.14 kWh</p>
                     </div>
-                    <div class="home__card__item" @click="router.push('/home/water');">
-                        <div class="home__card__item__icon">
-                            <i class="fas fa-tint"></i>
-                        </div>
-                        <div class="home__card__item__info">
-                            <p class="home__card__item__info__category">Irvine Ranch Water District</p>
-                            <p class="home__card__item__info__amount">3.14 gal</p>
-                        </div>
-                        <div class="home__card__item__score">
-                            <span class="home__card__item__score__my">29</span>
-                            <span class="home__card__item__score__total"> / 40</span>
-                        </div>
+                    <div class="home__card__item__score">
+                        <span class="home__card__item__score__my">32</span>
+                        <span class="home__card__item__score__total"> / 40</span>
                     </div>
-                </section>
+                </div>
+                <div class="home__card__item" @click="router.push('/home/gas');">
+                    <div class="home__card__item__icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="home__card__item__info">
+                        <p class="home__card__item__info__category">Southern California Gas</p>
+                        <p class="home__card__item__info__amount">3.14 Ccf</p>
+                    </div>
+                    <div class="home__card__item__score">
+                        <span class="home__card__item__score__my">40</span>
+                        <span class="home__card__item__score__total"> / 40</span>
+                    </div>
+                </div>
+                <div class="home__card__item" @click="router.push('/home/water');">
+                    <div class="home__card__item__icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="home__card__item__info">
+                        <p class="home__card__item__info__category">Irvine Ranch Water District</p>
+                        <p class="home__card__item__info__amount">3.14 gal</p>
+                    </div>
+                    <div class="home__card__item__score">
+                        <span class="home__card__item__score__my">29</span>
+                        <span class="home__card__item__score__total"> / 40</span>
+                    </div>
+                </div>
             </div>
         </div>
     `
@@ -186,17 +186,17 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                 el: '#main',
                 template: `
                     <div>
-                        <nav>
-                            <ul id="app-list">
-                                <li v-for="app in apps" :class="[$route.path.startsWith(app.path) ? 'active' : '']" @click="router.push(app.path);">
-                                    <img :src="'../images/' + app.icon">
-                                    <p><span>{{ app.name }}</span></p>
-                                </li>
-                            </ul>
-                        </nav>
                         <div id="current-app-wrapper">
                             <router-view></router-view>
                         </div>
+                        <nav>
+                            <ul>
+                                <li v-for="app in apps" :class="[$route.path.startsWith(app.path) ? 'active' : '']" @click="router.push(app.path);">
+                                    <img :src="'../images/' + app.icon">
+                                    <span>{{ app.name }}</span>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 `,
                 data: function () {

@@ -7,64 +7,91 @@
 }
 body {
     margin: 0;
-    min-height: 100vh;
-    background: linear-gradient(-135deg, #49a187, #9edd99);
 }
 a {
     text-decoration: none;
     color: currentColor;
 }
-nav {
-    position: fixed;
+#current-app-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 48px;
     left: 0;
+    background: linear-gradient(-135deg, #49a187, #9edd99);
+    overflow-y: scroll;
+}
+nav {
+    position: absolute;
     right: 0;
     bottom: 0;
-    height: 64px;
+    left: 0;
+    height: 49px;
     background-color: rgba(240, 240, 240, 1);
     border-top: 1px solid rgba(220, 220, 220, 1);
-    z-index: 1;
 }
 nav ul {
-    margin: 4px 0 0 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
     padding: 0;
+    list-style: none;
 }
 nav li {
-    display: inline-block;
+    position: relative;
+    float: left;
     width: 25%;
-    text-align: center;
+    height: 100%;
 }
 nav li img {
-    width: 32px;
-    height: 32px;
+    position: absolute;
+    margin: 0 auto;
+    top: 4px;
+    right: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
 }
-nav li p {
-    margin: 0;
-}
-nav li p span {
-    font-size: 12px;
+nav li span {
+    position: absolute;
+    margin: 0 auto;
+    top: 28px;
+    right: 0;
+    bottom: 4px;
+    left: 0;
+    font-size: 9pt;
+    line-height: 16px;
+    text-align: center;
     color: grey;
 }
 nav li.active span {
     color: #49a187;
 }
 #home__logo {
-    width: 120px;
-    display: block;
-    margin: 32px auto 0 auto;
-    left: 0;
-    right: 0;
+    margin: 0 auto;
+    padding: 32px 0;
+    text-align: center;
 }
-#home__circle {
+#home__logo img {
+    width: 128px;
+}
+#home__stat {
+    height: 250px;
+    overflow: hidden;
+}
+#home__stat__circle {
+    position: relative;
     height: 312px;
     width: 312px;
     border-radius: 50%;
     background-color: #fff;
-    margin: 48px auto 0 auto;
-    left: 0;
-    right: 0;
+    margin: 0 auto;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
-#home__circle__ring {
+#home__stat__circle__ring {
     position: relative;
     top: 6px;
     left: 6px;
@@ -72,14 +99,15 @@ nav li.active span {
     height: 300px;
     overflow: visible;
 }
-#home__circle__ring__total {
+#home__stat__circle__ring__total {
     fill: #fff;
     stroke: rgba(179, 220, 188, 1);
     stroke-width: 10px;
     stroke-dasharray: 706.86 235.62; /* 942.478 */
     stroke-dashoffset: 589.049;
+    stroke-linecap: round;
 }
-#home__circle__ring__my {
+#home__stat__circle__ring__my {
     fill: none;
     stroke: #49a187;
     stroke-width: 10px;
@@ -87,22 +115,18 @@ nav li.active span {
     stroke-dashoffset: 589.049;
     stroke-linecap: round;
 }
-#home__circle__tree {
+#home__stat__circle__tree {
     position: absolute;
     width: 160px;
     margin: 30px auto 0 auto;
     left: 0;
     right: 0;
-    z-index: 2;
 }
 #home__card {
-    position: relative;
-    top: -72px;
+    padding: 8px 16px;
     background-color: #fff;
-    min-height: 50vh;
 }
 #home__card__score {
-    padding-top: 24px;
     text-align: center;
     color: #49a187;
 }
@@ -113,13 +137,12 @@ nav li.active span {
     font-size: 16pt;
 }
 #home__card__info {
-    margin: 0 12px;
     font-size: 14pt;
 }
 .home__card__item {
     position: relative;
     border: 1px solid #eee;
-    margin: 8px 12px;
+    margin: 12px 0;
     height: 64px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
@@ -160,13 +183,13 @@ nav li.active span {
 .home__card__item__score__my {
     font-size: 18pt;
 }
-/* UTILITY DETAILS PAGES*/
+/* UTILITY DETAILS PAGES */
 .home__utility__titlebar {
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
-    height: 64px;
+    height: 48px;
 }
 .home__utility__titlebar__backarrow {
     position: absolute;
@@ -175,8 +198,8 @@ nav li.active span {
     left: 0;
     width: 48px;
     text-align: center;
-    line-height: 64px;
-    font-size: 32px;
+    line-height: 48px;
+    font-size: 16pt;
     color: white;
 }
 .home__utility__titlebar_title{
@@ -186,21 +209,20 @@ nav li.active span {
     right: 0;
     bottom: 0;
     left: 0;
-    font-size: 18px;
+    font-size: 12pt;
     text-align: center;
-    line-height: 64px;
+    line-height: 48px;
     color: white;
 }
 .home__utility__content {
     position: absolute;
-    top: 64px;
+    top: 48px;
     right: 0;
     bottom: 64px;
     left: 0;
     background-color: #fff;
 }
-.home__utility__content__datebar
-{
+.home__utility__content__datebar {
     position: relative;
     margin: 12px 12px;
     text-align: center;

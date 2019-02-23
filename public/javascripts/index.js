@@ -5,19 +5,21 @@ AV.init({
 new Vue({
     el: '#main',
     template: `
-        <div>
-            <section>
-                <img id="logo" src="../images/logo.png">
-                <img id="tree" src="../images/tree.png">
+        <div id="wrapper">
+            <section id="logo">
+                <img src="../images/logo.png">
             </section>
-            <section>
+            <section id="tree">
+                <img src="../images/tree.png">
+            </section>
+            <section id="sign-in">
                 <a href="/auth">
-                    <button id="sign-in">Sign In <i class="fas fa-chevron-right"></i></button>
+                    <button>Sign In <i class="fas fa-chevron-right"></i></button>
                 </a>
             </section>
-            <section>
+            <section id="create-account">
                 <a href="/auth?signup=true">
-                    <button id="create-account">Create Account</button>
+                    <button>Create Account</button>
                 </a>
             </section>
         </div>

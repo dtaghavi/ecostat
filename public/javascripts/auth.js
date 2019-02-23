@@ -10,11 +10,11 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
         new Vue({
             el: '#main',
             template: `
-                <div>
-                    <section>
-                        <img id="logo" src="../images/logo.png">
+                <div id="wrapper">
+                    <section id="logo">
+                        <img src="../images/logo.png">
                     </section>
-                    <section>
+                    <section id="fields">
                         <input v-if="creatingAccount" id="first-name" placeholder="First" v-model="firstName">
                         <input v-if="creatingAccount" id="last-name" placeholder="Last" v-model="lastName">
                         <input v-if="creatingAccount" placeholder="Zip Code" v-model="zipCode">
@@ -23,8 +23,8 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                         <button @click="go();">{{ creatingAccount ? 'Create Account' : 'Sign In' }}</button>
                         <button id="reset" class="minor" @click="requestPasswordReset();">Reset Password</button>
                     </section>
-                    <section>
-                        <button id="create" class="minor" @click="password = ''; creatingAccount = !creatingAccount;">{{ creatingAccount ? 'Sign In' : 'Create Account' }}</button>
+                    <section id="toggle">
+                        <button class="minor" @click="password = ''; creatingAccount = !creatingAccount;">{{ creatingAccount ? 'Sign In' : 'Create Account' }}</button>
                     </section>
                 </div>
             `,

@@ -7,36 +7,41 @@
 }
 body {
     margin: 0;
-    min-height: 100vh;
-    background: linear-gradient(-135deg, #49a187, #9edd99);
 }
 a {
     text-decoration: none;
     color: currentColor;
 }
-section {
-    text-align: center;
-}
 button {
+    outline: none;
     border: none;
     background: none;
 }
+#wrapper {
+    min-height: 100vh;
+    background: linear-gradient(-135deg, #49a187, #9edd99);
+}
 #logo {
+    margin: 0 auto;
+    padding: 128px 0 48px 0;
+    text-align: center;
+}
+#logo img {
     width: 128px;
-    display: block;
-    margin: 128px auto 0 auto;
-    left: 0;
-    right: 0;
 }
 #tree {
+    margin: 0 auto;
+    text-align: center;
+}
+#tree img {
     width: 128px;
-    display: block;
-    margin: 48px auto 0 auto;
-    left: 0;
-    right: 0;
 }
 #sign-in {
-    margin-top: 48px;
+    padding: 48px 0 0 0;
+    text-align: center;
+}
+#sign-in button {
+    margin: 0 auto;
     width: 144px;
     height: 56px;
     background-color: rgba(255, 255, 255, 0.4);
@@ -44,11 +49,15 @@ button {
     color: rgba(255, 255, 255, 0.8);
     border-radius: 32px;
 }
-#sign-in i {
+#sign-in button i {
     margin-left: 12px;
 }
 #create-account {
-    margin-top: 48px;
+    padding: 48px 0 0 0;
+    text-align: center;
+}
+#create-account button {
+    margin: 0 auto;
     color: rgba(255, 255, 255, 0.8);
     font-size: 12pt;
 }
