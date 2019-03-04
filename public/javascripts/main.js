@@ -5,10 +5,10 @@ AV.init({
 const AppHomeHome = {
     template: `
         <div>
-            <div id="home__logo">
-                <img src="../images/logo.png">
-            </div>
             <div id="home__stat">
+                <div id="home__stat__logo">
+                    <img src="../images/logo.png">
+                </div>
                 <div id="home__stat__circle">
                     <svg id="home__stat__circle__ring">
                         <circle id="home__stat__circle__ring__total" cx="50%" cy="50%" r="50%"></circle>
@@ -85,7 +85,7 @@ const AppHomeElectric = {
                     <p>Graph will be here.</p>
                     <p>Current 13.4 kWh Est. Cost $3.80</p>
                 </div>
-                <hr class="home__utility__divider">
+                <hr>
                 <div class="home__utility__bar">
                     <p> Bar will go here</p>
                 </div>
@@ -134,16 +134,29 @@ const AppTips = {
         <h1>This is tips.</h1>
     `
 };
-const AppProfile = {
+const AppProfileHome = {
     template: `
         <div>
             <div class="titlebar">
                 <div class="titlebar__title">
                     <span>Profile</span>
                 </div>
-                <div class="titlebar__left" @click="router.push('/home');">
-                    <i class="fas fa-angle-left">
+                <div class="titlebar__right" @click="router.push('/profile/settings');">
+                    <i class="fas fa-cog"></i>
                 </div>
+            </div>
+            <div class="content">
+                <div id="profile__header">
+                    <div id="profile__header__image">
+                        <img src="https://avatars0.githubusercontent.com/u/17325112?s=460&v=4">
+                    </div>
+                    <div id="profile__header__info">
+                        <p id="profile__header__name">{{firstName}} {{lastName}}</p>
+                        <p id="profile__header__tier">EcoTier: Sapling</p>
+                        <p id="profile__header__social"><span>Followers</span><span>Following</span></p>
+                    </div>
+                </div>
+                <hr>
             </div>
         </div>
     `,
@@ -154,10 +167,98 @@ const AppProfile = {
             followers: [],
             followees: []
         };
-    },
-    created: function () {
-        
     }
+};
+const AppProfileSettings = {
+    template: `
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Settings</span>
+                </div>
+                <div class="titlebar__left" @click="router.push('/profile');">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+            <div class="content">
+                <p class="settings__subtitle">
+                    <span>My info</span>
+                    <span style="float: right;" @click="saveChanges();">Save</span>
+                </p>
+                <div>
+                    <div class="settings__item">
+                        <span class="settings__item__name">First Name</span>
+                        <input class="settings__item__value" :value="firstName" @input="AV.User.current().set('firstName', $event.target.value)"></input>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Last Name</span>
+                        <input class="settings__item__value" :value="lastName" @input="AV.User.current().set('lastName', $event.target.value)"></input>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Email</span>
+                        <input class="settings__item__value" :value="email" @input="AV.User.current().set('email', $event.target.value)"></input>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Phone Number</span>
+                        <input class="settings__item__value" :value="mobilePhoneNumber" @input="AV.User.current().set('mobilePhoneNumber', $event.target.value)"></input>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Household Size</span>
+                        <input class="settings__item__value" :value="householdSize" @input="AV.User.current().set('householdSize', parseInt($event.target.value))"></input>
+                    </div>
+                    <hr>
+                    <div class="settings__item" @click="logOut();">
+                        <span style="color: red; text-transform: uppercase;" class="settings__item__name">Log Out</span>
+                    </div>
+                </div>
+                <p class="settings__subtitle">Privacy</p>
+                <div>
+                    
+                </div>
+                <p class="settings__subtitle">Services</p>
+                <div>
+                    
+                </div>
+                <p class="settings__subtitle">Devices</p>
+                <div>
+                    
+                </div>
+                
+            </div>
+        </div>
+    `,
+    data: function () {
+        return {
+            firstName: AV.User.current().get('firstName'),
+            lastName: AV.User.current().get('lastName'),
+            email: AV.User.current().get('email'),
+            mobilePhoneNumber: AV.User.current().get('mobilePhoneNumber'),
+            householdSize: AV.User.current().get('householdSize')
+        };
+    },
+    methods: {
+        saveChanges: function () {
+            AV.User.current().save().then(function () {
+                alert('Profile saved.');
+            }, function (error) {
+                alert(error);
+            });
+        },
+        logOut: function () {
+            AV.User.logOut().then(function () {
+                location.href = '/';
+            });
+        }
+    }
+};
+const AppProfile = {
+    template: `
+        <router-view></router-view>
+    `
 };
 const router = new VueRouter({
     mode: 'history',
@@ -194,7 +295,17 @@ const router = new VueRouter({
         },
         {
             path: '/profile',
-            component: AppProfile
+            component: AppProfile,
+            children: [
+                {
+                    path: '',
+                    component: AppProfileHome
+                },
+                {
+                    path: 'settings',
+                    component: AppProfileSettings
+                },
+            ]
         }
     ]
 });

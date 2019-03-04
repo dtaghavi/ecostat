@@ -18,7 +18,7 @@ a {
     right: 0;
     bottom: 48px;
     left: 0;
-    background: linear-gradient(-135deg, #49a187, #9edd99);
+    background-color: #eee;
     overflow-y: scroll;
 }
 nav {
@@ -27,7 +27,7 @@ nav {
     bottom: 0;
     left: 0;
     height: 49px;
-    background-color: rgba(240, 240, 240, 1);
+    background-color: #fafafa;
     border-top: 1px solid rgba(220, 220, 220, 1);
 }
 nav ul {
@@ -76,7 +76,7 @@ nav li.active span {
     right: 0;
     left: 0;
     height: 48px;
-    background: linear-gradient(-135deg, #49a187, #9edd99);
+    background-color: #49a187;
     z-index: 1;
 }
 .titlebar__title{
@@ -87,6 +87,7 @@ nav li.active span {
     bottom: 0;
     left: 0;
     font-size: 12pt;
+    font-weight: bold;
     text-align: center;
     line-height: 48px;
     color: white;
@@ -102,25 +103,42 @@ nav li.active span {
     font-size: 16pt;
     color: white;
 }
+.titlebar__right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 48px;
+    text-align: center;
+    line-height: 48px;
+    font-size: 16pt;
+    color: white;
+}
 .content {
     position: absolute;
     top: 48px;
     right: 0;
-    bottom: 64px;
     left: 0;
     background-color: #fff;
 }
-#home__logo {
+hr {
+    margin: 0;
+    border: none;
+    height: 1px;
+    background-color: #eee;
+}
+#home__stat__logo {
     margin: 0 auto;
     padding: 32px 0;
     text-align: center;
 }
-#home__logo img {
+#home__stat__logo img {
     width: 128px;
 }
 #home__stat {
-    height: 250px;
+    height: 360px;
     overflow: hidden;
+    background: linear-gradient(-135deg, #49a187, #9edd99);
 }
 #home__stat__circle {
     position: relative;
@@ -249,11 +267,6 @@ nav li.active span {
     position: relative;
     height: 240px;
 }
-.home__utility__divider {
-    border: none;
-    height: 1px;
-    background-color: #eee;
-}
 .home__utility__bar {
     height: 72px;
 }
@@ -264,4 +277,67 @@ nav li.active span {
     float: left;
     width: 50%;
     line-height: 36px;
+}
+#profile__header {
+    position: relative;
+    height: 128px;
+}
+#profile__header__image {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    height: 96px;
+    width: 96px;
+}
+#profile__header__image img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+#profile__header__info {
+    position: absolute;
+    top: 16px;
+    left: 128px;
+    right: 16px;
+}
+#profile__header__name {
+    margin: 8px 0 0 0;
+    font-size: 14pt;
+    color: black;
+    font-weight: bold;
+}
+#profile__header__tier {
+    margin: 8px 0 0 0;
+    font-size: 10pt;
+    color: gray;
+}
+#profile__header__social {
+    margin: 12px 0 0 0;
+}
+#profile__header__social span {
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 10pt;
+}
+#profile__header__social span:nth-of-type(1) {
+    margin: 0 4px 0 0;
+}
+.settings__subtitle {
+    margin: 0;
+    padding: 24px 12px 8px 12px;
+    background-color: #eee;
+    text-transform: uppercase;
+    color: gray;
+}
+.settings__item {
+    padding: 12px;
+}
+.settings__item__value {
+    float: right;
+    color: #333;
+    text-align: right;
+    border: 0;
+    font-size: 12pt;
+    outline: none;
 }
