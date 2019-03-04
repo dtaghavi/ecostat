@@ -70,6 +70,46 @@ nav li span {
 nav li.active span {
     color: #49a187;
 }
+.titlebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 48px;
+    background: linear-gradient(-135deg, #49a187, #9edd99);
+    z-index: 1;
+}
+.titlebar__title{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 12pt;
+    text-align: center;
+    line-height: 48px;
+    color: white;
+}
+.titlebar__left {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 48px;
+    text-align: center;
+    line-height: 48px;
+    font-size: 16pt;
+    color: white;
+}
+.content {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    bottom: 64px;
+    left: 0;
+    background-color: #fff;
+}
 #home__logo {
     margin: 0 auto;
     padding: 32px 0;
@@ -183,46 +223,7 @@ nav li.active span {
 .home__card__item__score__my {
     font-size: 18pt;
 }
-/* UTILITY DETAILS PAGES */
-.home__utility__titlebar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 48px;
-}
-.home__utility__titlebar__backarrow {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 48px;
-    text-align: center;
-    line-height: 48px;
-    font-size: 16pt;
-    color: white;
-}
-.home__utility__titlebar_title{
-    position: absolute;
-    margin: auto;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    font-size: 12pt;
-    text-align: center;
-    line-height: 48px;
-    color: white;
-}
-.home__utility__content {
-    position: absolute;
-    top: 48px;
-    right: 0;
-    bottom: 64px;
-    left: 0;
-    background-color: #fff;
-}
-.home__utility__content__datebar {
+.home__utility__datebar {
     position: relative;
     margin: 12px 12px;
     text-align: center;
@@ -231,20 +232,20 @@ nav li.active span {
     height: 36px;
     overflow: hidden;
 }
-.home__utility__content__datebar span {
+.home__utility__datebar span {
     display: inline-block;
     width: 25%;
     line-height: 36px;
 }
-.home__utility__content__datebar span:nth-child(1),
-.home__utility__content__datebar span:nth-child(2),
-.home__utility__content__datebar span:nth-child(3) {
+.home__utility__datebar span:nth-child(1),
+.home__utility__datebar span:nth-child(2),
+.home__utility__datebar span:nth-child(3) {
     border-right: 1px solid #49a187;
 }
-.home__utility__content__datebar span.active {
+.home__utility__datebar span.active {
     background-color: rgba(73, 161, 135, 0.4);
 }
-.home__utility__content__graph {
+.home__utility__graph {
     position: relative;
     height: 240px;
 }
@@ -253,13 +254,13 @@ nav li.active span {
     height: 1px;
     background-color: #eee;
 }
-.home__utility__content__bar {
+.home__utility__bar {
     height: 72px;
 }
-.home__utility__content__info {
+.home__utility__info {
     display: table;
 }
-.home__utility__content__info div {
+.home__utility__info div {
     float: left;
     width: 50%;
     line-height: 36px;

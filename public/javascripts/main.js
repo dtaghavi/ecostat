@@ -69,28 +69,27 @@ const AppHomeHome = {
 const AppHomeElectric = {
     template: `
         <div>
-            <div class="home__utility__titlebar">
-                <div class="home__utility__titlebar_title">
+            <div class="titlebar">
+                <div class="titlebar__title">
                     <span>Energy Usage</span>
                 </div>
-                <div class="home__utility__titlebar__backarrow" @click="router.push('/home');">
+                <div class="titlebar__left" @click="router.push('/home');">
                     <i class="fas fa-angle-left">
                 </div>
             </div>
-            <div class="home__utility__content">
-                <div class="home__utility__content__datebar">
+            <div class="content">
+                <div class="home__utility__datebar">
                     <span :class="currentView === 0 ? 'active' : ''" @click="currentView = 0;">D</span><span :class="currentView === 1 ? 'active' : ''" @click="currentView = 1;">W</span><span :class="currentView === 2 ? 'active' : ''" @click="currentView = 2;">M</span><span :class="currentView === 3 ? 'active' : ''" @click="currentView = 3;">Y</span>
                 </div>
-                <div class="home__utility__content__graph">
+                <div class="home__utility__graph">
                     <p>Graph will be here.</p>
-
                     <p>Current 13.4 kWh Est. Cost $3.80</p>
                 </div>
                 <hr class="home__utility__divider">
-                <div class="home__utility__content__bar">
+                <div class="home__utility__bar">
                     <p> Bar will go here</p>
                 </div>
-                <div class="home__utility__content__info">
+                <div class="home__utility__info">
                     <div>
                         <p>EcoLimit</p>
                         <p>You have exceeded your daily usage of 9 kWh</p>
@@ -137,8 +136,28 @@ const AppTips = {
 };
 const AppProfile = {
     template: `
-        <h1>This is the profile.</h1>
-    `
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Profile</span>
+                </div>
+                <div class="titlebar__left" @click="router.push('/home');">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+        </div>
+    `,
+    data: function () {
+        return {
+            firstName: AV.User.current().get('firstName'),
+            lastName: AV.User.current().get('lastName'),
+            followers: [],
+            followees: []
+        };
+    },
+    created: function () {
+        
+    }
 };
 const router = new VueRouter({
     mode: 'history',
