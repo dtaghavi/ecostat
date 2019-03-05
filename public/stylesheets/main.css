@@ -323,6 +323,21 @@ hr {
 #profile__header__social span:nth-of-type(1) {
     margin: 0 4px 0 0;
 }
+.profile__achievement {
+    position: relative;
+    height: 96px;
+}
+.profile__achievement__info {
+    position: absolute;
+    top: 20px;
+    right: 16px;
+    left: 48px;
+    font-size: 10pt;
+    color: gray;
+}
+.profile__achievement__info__text {
+    margin: 0 0 8px 0;
+}
 .settings__subtitle {
     margin: 0;
     padding: 24px 12px 8px 12px;
@@ -332,6 +347,7 @@ hr {
 }
 .settings__item {
     padding: 12px;
+    position: relative;
 }
 .settings__item__value {
     float: right;
@@ -340,4 +356,32 @@ hr {
     border: 0;
     font-size: 12pt;
     outline: none;
+}
+.settings__item__toggle {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    bottom: 8px;
+    width: 48px;
+    background: linear-gradient(-135deg, #fff, #fff);
+    border-radius: 16px;
+    border: 1px solid #eee;
+}
+.settings__item__toggle__circle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 22px;
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+.settings__item__toggle--on {
+    background: linear-gradient(-135deg, #49a187, #9edd99);
+}
+.settings__item__toggle--on .settings__item__toggle__circle {
+    left: 22px;
+    right: 0;
 }

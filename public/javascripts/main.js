@@ -152,21 +152,76 @@ const AppProfileHome = {
                     </div>
                     <div id="profile__header__info">
                         <p id="profile__header__name">{{firstName}} {{lastName}}</p>
-                        <p id="profile__header__tier">EcoTier: Sapling</p>
-                        <p id="profile__header__social"><span>Followers</span><span>Following</span></p>
+                        <p id="profile__header__tier">EcoTier: {{ecoTier}}</p>
+                        <p id="profile__header__social"><span>{{followers.length}} Followers</span><span>{{followees.length}} Following</span></p>
                     </div>
                 </div>
                 <hr>
+                <div id="profile__achievements">
+                    <div v-for="achievement in achievements">
+                        <div class="profile__achievement">
+                            <div class="profile__achievement__info">
+                                <p class="profile__achievement__info__text">Achieved a new {{achievement.get('content').type}}!</p>
+                                <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{achievement.get('content').tier}}</p>
+                                <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{achievement.get('content').days}}</p>
+                                <p @click="like(achievement)" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{achievement.get('likedBy').length}}</p>
+                            </div>
+                            <div class="profile__achievement__icon">
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
             </div>
         </div>
     `,
     data: function () {
         return {
+            ecoTier: AV.User.current().get('ecoTier'),
             firstName: AV.User.current().get('firstName'),
             lastName: AV.User.current().get('lastName'),
             followers: [],
-            followees: []
+            followees: [],
+            achievements: []
         };
+    },
+    created: function () {
+        let vm = this;
+        var Achievement = AV.Object.extend('Achievement');
+        var query = new AV.Query(Achievement);
+        query.equalTo('user', AV.User.current());
+        query.descending('createdAt');
+        query.find().then(function (results) {
+            vm.achievements = results;
+        });
+        var followeeQuery = AV.User.current().followeeQuery();
+        followeeQuery.include('followee');
+        followeeQuery.find().then(function (results) {
+            vm.followees = results;
+        });
+        var followerQuery = AV.User.current().followerQuery();
+        followerQuery.include('follower');
+        followerQuery.find().then(function (results) {
+            vm.followers = results;
+        });
+    },
+    methods: {
+        like: function (achievement) {
+            var found = false;
+            for (var i = 0; i < achievement.get('likedBy').length; i++) {
+                if (achievement.get('likedBy')[i].id === AV.User.current().id) {
+                    found = true;
+                }
+            }
+            if (found) {
+                achievement.remove('likedBy', AV.User.current());
+                achievement.save();
+            }
+            else {
+                achievement.addUnique('likedBy', AV.User.current());
+                achievement.save();
+            }
+        }
     }
 };
 const AppProfileSettings = {
@@ -179,11 +234,13 @@ const AppProfileSettings = {
                 <div class="titlebar__left" @click="router.push('/profile');">
                     <i class="fas fa-angle-left">
                 </div>
+                <div style="font-size: 12pt; width: unset; right: 12px;" class="titlebar__right">
+                    <span @click="saveChanges();">Save</span>
+                </div>
             </div>
             <div class="content">
                 <p class="settings__subtitle">
                     <span>My info</span>
-                    <span style="float: right;" @click="saveChanges();">Save</span>
                 </p>
                 <div>
                     <div class="settings__item">
@@ -217,22 +274,49 @@ const AppProfileSettings = {
                 </div>
                 <p class="settings__subtitle">Privacy</p>
                 <div>
-                    
-                </div>
-                <p class="settings__subtitle">Services</p>
-                <div>
-                    
+                    <div class="settings__item">
+                        <span class="settings__item__name">Display EcoStatus</span>
+                        <div :class="['settings__item__toggle', displayEcoStatus ? 'settings__item__toggle--on' : '']" @click="AV.User.current().set('displayEcoStatus', !AV.User.current().get('displayEcoStatus')); AV.User.current().save(); displayEcoStatus = AV.User.current().get('displayEcoStatus');">
+                            <div class="settings__item__toggle__circle"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Show Achievements</span>
+                        <div :class="['settings__item__toggle', showAchievements ? 'settings__item__toggle--on' : '']" @click="AV.User.current().set('showAchievements', !AV.User.current().get('showAchievements')); AV.User.current().save(); showAchievements = AV.User.current().get('showAchievements');">
+                            <div class="settings__item__toggle__circle"></div>
+                        </div>
+                    </div>
+                    <hr>
                 </div>
                 <p class="settings__subtitle">Devices</p>
                 <div>
-                    
+                    <div class="settings__item">
+                        <span class="settings__item__name">Water Tracker 2.0</span>
+                        <input class="settings__item__value" :value="waterID" @input="AV.User.current().set('waterID', $event.target.value)"></input>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Gas Monitor</span>
+                        <input class="settings__item__value" :value="gasID" @input="AV.User.current().set('gasID', $event.target.value)"></input>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Electricity Monitor</span>
+                        <input class="settings__item__value" :value="electricID" @input="AV.User.current().set('electricID', $event.target.value)"></input>
+                    </div>
+                    <hr>
                 </div>
-                
             </div>
         </div>
     `,
     data: function () {
         return {
+            gasID: AV.User.current().get('gasID'),
+            waterID: AV.User.current().get('waterID'),
+            electricID: AV.User.current().get('electricID'),
+            displayEcoStatus: AV.User.current().get('displayEcoStatus'),
+            showAchievements: AV.User.current().get('showAchievements'),
             firstName: AV.User.current().get('firstName'),
             lastName: AV.User.current().get('lastName'),
             email: AV.User.current().get('email'),
