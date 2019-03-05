@@ -279,7 +279,7 @@ const AppProfileSettings = {
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Household Size</span>
-                        <input class="settings__item__value" :value="householdSize" @input="householdSize = parseInt($event.target.value);"></input>
+                        <input class="settings__item__value" :value="householdSize" @input="householdSize = parseInt($event.target.value) || 0;"></input>
                     </div>
                     <hr>
                     <div class="settings__item" @click="logOut();">
