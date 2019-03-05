@@ -259,22 +259,22 @@ const AppProfileSettings = {
                 <div>
                     <div class="settings__item">
                         <span class="settings__item__name">First Name</span>
-                        <input class="settings__item__value" :value="firstName" @input="firstName = $event.target.value;"></input>
+                        <input class="settings__item__value" v-model="firstName"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Last Name</span>
-                        <input class="settings__item__value" :value="lastName" @input="lastName = $event.target.value;"></input>
+                        <input class="settings__item__value" v-model="lastName"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Email</span>
-                        <input class="settings__item__value" :value="email" @input="email = $event.target.value;"></input>
+                        <input class="settings__item__value" v-model="email"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Phone Number</span>
-                        <input class="settings__item__value" :value="mobilePhoneNumber" @input="mobilePhoneNumber = $event.target.value;"></input>
+                        <input class="settings__item__value" v-model="mobilePhoneNumber"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
@@ -307,17 +307,17 @@ const AppProfileSettings = {
                 <div>
                     <div class="settings__item">
                         <span class="settings__item__name">Water Tracker 2.0</span>
-                        <input class="settings__item__value" :value="waterID" @input="waterID = $event.target.value;"></input>
+                        <input class="settings__item__value" v-model="waterID"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Gas Monitor</span>
-                        <input class="settings__item__value" :value="gasID" @input="gasID = $event.target.value;"></input>
+                        <input class="settings__item__value" v-model="gasID"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Electricity Monitor</span>
-                        <input class="settings__item__value" :value="electricID" @input="electricID = $event.target.value;"></input>
+                        <input class="settings__item__value" v-model="electricID"></input>
                     </div>
                     <hr>
                 </div>
