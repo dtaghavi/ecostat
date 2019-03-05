@@ -148,7 +148,8 @@ const AppProfileHome = {
             <div class="content">
                 <div id="profile__header">
                     <div id="profile__header__image">
-                        <img src="https://avatars0.githubusercontent.com/u/17325112?s=460&v=4">
+                        <img :src="profilePicture && profilePicture.url()" @click="document.getElementById('profile-picture').click();">
+                        <input type="file" id="profile-picture" style="display: none;" @change="uploadProfilePicture()">
                     </div>
                     <div id="profile__header__info">
                         <p id="profile__header__name">{{firstName}} {{lastName}}</p>
@@ -177,6 +178,7 @@ const AppProfileHome = {
     `,
     data: function () {
         return {
+            profilePicture: AV.User.current().get('profilePicture'),
             ecoTier: AV.User.current().get('ecoTier'),
             firstName: AV.User.current().get('firstName'),
             lastName: AV.User.current().get('lastName'),
@@ -187,11 +189,10 @@ const AppProfileHome = {
     },
     created: function () {
         let vm = this;
-        var Achievement = AV.Object.extend('Achievement');
-        var query = new AV.Query(Achievement);
-        query.equalTo('user', AV.User.current());
-        query.descending('createdAt');
-        query.find().then(function (results) {
+        var ahievementQuery = new AV.Query('Achievement');
+        ahievementQuery.equalTo('user', AV.User.current());
+        ahievementQuery.descending('createdAt');
+        ahievementQuery.find().then(function (results) {
             vm.achievements = results;
         });
         var followeeQuery = AV.User.current().followeeQuery();
@@ -221,6 +222,19 @@ const AppProfileHome = {
                 achievement.addUnique('likedBy', AV.User.current());
                 achievement.save();
             }
+        },
+        uploadProfilePicture: function () {
+            let vm = this;
+            var file = new AV.File(name, document.getElementById('profile-picture').files[0]);
+            file.save().then(function (file) {
+                AV.User.current().set('profilePicture', file);
+                AV.User.current().save().then(function () {
+                    alert('Profile picture uploaded.');
+                    vm.profilePicture = AV.User.current().get('profilePicture');
+                });
+            }, function (error) {
+                alert(error);
+            });
         }
     }
 };

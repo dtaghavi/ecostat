@@ -356,6 +356,7 @@ hr {
     border: 0;
     font-size: 12pt;
     outline: none;
+    width: 50%;
 }
 .settings__item__toggle {
     position: absolute;
