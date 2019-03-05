@@ -259,27 +259,27 @@ const AppProfileSettings = {
                 <div>
                     <div class="settings__item">
                         <span class="settings__item__name">First Name</span>
-                        <input class="settings__item__value" :value="firstName" @input="AV.User.current().set('firstName', $event.target.value)"></input>
+                        <input class="settings__item__value" :value="firstName" @input="firstName = $event.target.value;"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Last Name</span>
-                        <input class="settings__item__value" :value="lastName" @input="AV.User.current().set('lastName', $event.target.value)"></input>
+                        <input class="settings__item__value" :value="lastName" @input="lastName = $event.target.value;"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Email</span>
-                        <input class="settings__item__value" :value="email" @input="AV.User.current().set('email', $event.target.value)"></input>
+                        <input class="settings__item__value" :value="email" @input="email = $event.target.value;"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Phone Number</span>
-                        <input class="settings__item__value" :value="mobilePhoneNumber" @input="AV.User.current().set('mobilePhoneNumber', $event.target.value)"></input>
+                        <input class="settings__item__value" :value="mobilePhoneNumber" @input="mobilePhoneNumber = $event.target.value;"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Household Size</span>
-                        <input class="settings__item__value" :value="householdSize" @input="AV.User.current().set('householdSize', parseInt($event.target.value))"></input>
+                        <input class="settings__item__value" :value="householdSize" @input="householdSize = parseInt($event.target.value);"></input>
                     </div>
                     <hr>
                     <div class="settings__item" @click="logOut();">
@@ -290,14 +290,14 @@ const AppProfileSettings = {
                 <div>
                     <div class="settings__item">
                         <span class="settings__item__name">Display EcoStatus</span>
-                        <div :class="['settings__item__toggle', displayEcoStatus ? 'settings__item__toggle--on' : '']" @click="AV.User.current().set('displayEcoStatus', !AV.User.current().get('displayEcoStatus')); AV.User.current().save(); displayEcoStatus = AV.User.current().get('displayEcoStatus');">
+                        <div :class="['settings__item__toggle', displayEcoStatus ? 'settings__item__toggle--on' : '']" @click="displayEcoStatus = !displayEcoStatus;">
                             <div class="settings__item__toggle__circle"></div>
                         </div>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Show Achievements</span>
-                        <div :class="['settings__item__toggle', showAchievements ? 'settings__item__toggle--on' : '']" @click="AV.User.current().set('showAchievements', !AV.User.current().get('showAchievements')); AV.User.current().save(); showAchievements = AV.User.current().get('showAchievements');">
+                        <div :class="['settings__item__toggle', showAchievements ? 'settings__item__toggle--on' : '']" @click="showAchievements = !showAchievements;">
                             <div class="settings__item__toggle__circle"></div>
                         </div>
                     </div>
@@ -307,17 +307,17 @@ const AppProfileSettings = {
                 <div>
                     <div class="settings__item">
                         <span class="settings__item__name">Water Tracker 2.0</span>
-                        <input class="settings__item__value" :value="waterID" @input="AV.User.current().set('waterID', $event.target.value)"></input>
+                        <input class="settings__item__value" :value="waterID" @input="waterID = $event.target.value;"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Gas Monitor</span>
-                        <input class="settings__item__value" :value="gasID" @input="AV.User.current().set('gasID', $event.target.value)"></input>
+                        <input class="settings__item__value" :value="gasID" @input="gasID = $event.target.value;"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Electricity Monitor</span>
-                        <input class="settings__item__value" :value="electricID" @input="AV.User.current().set('electricID', $event.target.value)"></input>
+                        <input class="settings__item__value" :value="electricID" @input="electricID = $event.target.value;"></input>
                     </div>
                     <hr>
                 </div>
@@ -326,20 +326,44 @@ const AppProfileSettings = {
     `,
     data: function () {
         return {
-            gasID: AV.User.current().get('gasID'),
-            waterID: AV.User.current().get('waterID'),
-            electricID: AV.User.current().get('electricID'),
-            displayEcoStatus: AV.User.current().get('displayEcoStatus'),
-            showAchievements: AV.User.current().get('showAchievements'),
-            firstName: AV.User.current().get('firstName'),
-            lastName: AV.User.current().get('lastName'),
-            email: AV.User.current().get('email'),
-            mobilePhoneNumber: AV.User.current().get('mobilePhoneNumber'),
-            householdSize: AV.User.current().get('householdSize')
+            gasID: '',
+            waterID: '',
+            electricID: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            mobilePhoneNumber: '',
+            householdSize: 0,
+            displayEcoStatus: false,
+            showAchievements: false
         };
+    },
+    created: function () {
+        let vm = this;
+        vm.gasID = AV.User.current().get('gasID');
+        vm.waterID = AV.User.current().get('waterID');
+        vm.electricID = AV.User.current().get('electricID');
+        vm.firstName = AV.User.current().get('firstName');
+        vm.lastName = AV.User.current().get('lastName');
+        vm.email = AV.User.current().get('email');
+        vm.mobilePhoneNumber = AV.User.current().get('mobilePhoneNumber');
+        vm.householdSize = AV.User.current().get('householdSize');
+        vm.displayEcoStatus = AV.User.current().get('displayEcoStatus');
+        vm.showAchievements = AV.User.current().get('showAchievements');
     },
     methods: {
         saveChanges: function () {
+            let vm = this;
+            AV.User.current().set('gasID', vm.gasID);
+            AV.User.current().set('waterID', vm.waterID);
+            AV.User.current().set('electricID', vm.electricID);
+            AV.User.current().set('firstName', vm.firstName);
+            AV.User.current().set('lastName', vm.lastName);
+            AV.User.current().set('email', vm.email);
+            AV.User.current().set('mobilePhoneNumber', vm.mobilePhoneNumber);
+            AV.User.current().set('householdSize', vm.householdSize);
+            AV.User.current().set('displayEcoStatus', vm.displayEcoStatus);
+            AV.User.current().set('showAchievements', vm.showAchievements);
             AV.User.current().save().then(function () {
                 alert('Profile saved.');
             }, function (error) {
