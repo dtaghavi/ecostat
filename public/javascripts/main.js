@@ -282,6 +282,11 @@ const AppProfileSettings = {
                         <input class="settings__item__value" :value="householdSize" @input="householdSize = parseInt($event.target.value) || 0;"></input>
                     </div>
                     <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Change Password</span>
+                        <span class="settings__item__right" @click="changePassword()"><i class="fas fa-angle-right"></i></span>
+                    </div>
+                    <hr>
                     <div class="settings__item" @click="logOut();">
                         <span style="color: red; text-transform: uppercase;" class="settings__item__name">Log Out</span>
                     </div>
@@ -318,6 +323,24 @@ const AppProfileSettings = {
                     <div class="settings__item">
                         <span class="settings__item__name">Electricity Monitor</span>
                         <input class="settings__item__value" v-model="electricID"></input>
+                    </div>
+                    <hr>
+                </div>
+                <p class="settings__subtitle">Services</p>
+                <div>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Southern California Edison</span>
+                        <span class="settings__item__right"><i class="fas fa-angle-right"></i></span>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">Irvine Ranch Water District</span>
+                        <span class="settings__item__right"><i class="fas fa-angle-right"></i></span>
+                    </div>
+                    <hr>
+                    <div class="settings__item">
+                        <span class="settings__item__name">SoCal Gas</span>
+                        <span class="settings__item__right"><i class="fas fa-angle-right"></i></span>
                     </div>
                     <hr>
                 </div>
@@ -376,7 +399,26 @@ const AppProfileSettings = {
                     location.href = '/';
                 });
             }
+        },
+        changePassword: function () {
+            var tempPass = prompt('Enter new password:')
+            if (tempPass) {
+                var tempPass2 = prompt('Enter new password again:')
+                if (tempPass2) {
+                    if (tempPass === tempPass2) {
+                        AV.User.current().set('password', tempPass);
+                        AV.User.current().save().then(function () {
+                            alert('Password Changed')
+                        })
+                    }
+                    else {
+                        alert('Password does not match, try again.')
+                    }
+                }
+            }
+
         }
+
     }
 };
 const AppProfile = {

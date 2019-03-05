@@ -358,6 +358,11 @@ hr {
     outline: none;
     width: 50%;
 }
+.settings__item__right {
+    float: right;
+    color: #49a187;
+    font-size: 16pt;
+}
 .settings__item__toggle {
     position: absolute;
     top: 8px;
