@@ -148,7 +148,7 @@ const AppProfileHome = {
             <div class="content">
                 <div id="profile__header">
                     <div id="profile__header__image">
-                        <img :src="profilePicture && profilePicture.url()" @click="document.getElementById('profile-picture').click();">
+                        <img :src="profilePicture ? profilePicture.url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'" @click="document.getElementById('profile-picture').click();">
                         <input type="file" id="profile-picture" style="display: none;" @change="uploadProfilePicture()">
                     </div>
                     <div id="profile__header__info">
