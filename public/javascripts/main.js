@@ -371,9 +371,11 @@ const AppProfileSettings = {
             });
         },
         logOut: function () {
-            AV.User.logOut().then(function () {
-                location.href = '/';
-            });
+            if (confirm('Are you sure to log out?')) {
+                AV.User.logOut().then(function () {
+                    location.href = '/';
+                });
+            }
         }
     }
 };
