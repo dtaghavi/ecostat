@@ -401,24 +401,22 @@ const AppProfileSettings = {
             }
         },
         changePassword: function () {
-            var tempPass = prompt('Enter new password:')
+            var tempPass = prompt('Enter new password:');
             if (tempPass) {
-                var tempPass2 = prompt('Enter new password again:')
+                var tempPass2 = prompt('Enter new password again:');
                 if (tempPass2) {
                     if (tempPass === tempPass2) {
                         AV.User.current().set('password', tempPass);
                         AV.User.current().save().then(function () {
-                            alert('Password Changed')
-                        })
+                            alert('Password Changed');
+                        });
                     }
                     else {
-                        alert('Password does not match, try again.')
+                        alert('Password does not match, try again.');
                     }
                 }
             }
-
         }
-
     }
 };
 const AppProfile = {
