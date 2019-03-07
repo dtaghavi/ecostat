@@ -124,9 +124,263 @@ const AppHome = {
         <router-view></router-view>
     `
 };
+const AppSocialHome = {
+    template: `
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Friends Eco Accomplishments</span>
+                </div>
+            </div>
+            <div class="content">
+                <div id="social__searchbar">
+                    <div id="social__searchbar__contents">
+                        <div id="social__searchbar__main" :class="[keyword ? 'short' : '']">
+                            <i class="fas fa-search"></i>
+                            <input placeholder="Search" v-model="keyword">
+                        </div>
+                        <p id="social__searchbar__search" @click="router.push('/social/results/' + keyword)">Search</p>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <div v-for="achievement in achievements">
+                        <div class="profile__achievement">
+                            <div class="profile__achievement__image" @click="router.push('/user/' + achievement.get('user').id)">
+                                <img :src="achievement.get('user').get('profilePicture') ? achievement.get('user').get('profilePicture').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
+                            </div>
+                            <div class="profile__achievement__info">
+                                <p style="color: #49a187;" class="profile__achievement__info__text" @click="router.push('/user/' + achievement.get('user').id)">{{achievement.get('user').get('firstName')}} {{achievement.get('user').get('lastName')}}</p>
+                                <p class="profile__achievement__info__text">Achieved a new {{achievement.get('content').type}}!</p>
+                                <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{achievement.get('content').tier}}</p>
+                                <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{achievement.get('content').days}}</p>
+                                <p @click="like(achievement)" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{achievement.get('likedBy').length}}</p>
+                            </div>
+                            <div class="profile__achievement__icon">
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+    data: function () {
+        return {
+            keyword: '',
+            achievements: []
+        };
+    },
+    created: function () {
+        let vm = this;
+        var followeeQuery = AV.User.current().followeeQuery();
+        followeeQuery.find().then(function (results) {
+            var achievementsQuery = new AV.Query('Achievement');
+            achievementsQuery.include('user');
+            achievementsQuery.containedIn('user', results);
+            achievementsQuery.descending('createdAt');
+            achievementsQuery.find().then(function (results) {
+                vm.achievements = results;
+            });
+        });
+    },
+    methods: {
+        like: function (achievement) {
+            var found = false;
+            for (var i = 0; i < achievement.get('likedBy').length; i++) {
+                if (achievement.get('likedBy')[i].id === AV.User.current().id) {
+                    found = true;
+                }
+            }
+            if (found) {
+                achievement.remove('likedBy', AV.User.current());
+                achievement.save();
+            }
+            else {
+                achievement.addUnique('likedBy', AV.User.current());
+                achievement.save();
+            }
+        },
+    }
+};
+const AppSocialResults = {
+    template: `
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Search Results</span>
+                </div>
+                <div class="titlebar__left" @click="router.push('/social');">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+            <div class="content">
+                <div>
+                    <div v-for="user in users">
+                        <div class="social__result" @click="router.push('/user/' + user.id)">
+                            <div class="social__result__image">
+                                <img :src="user.get('profilePicture') ? user.get('profilePicture').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
+                            </div>
+                            <div class="social__result__info">
+                                <p class="socia__result__name">{{user.get('firstName')}} {{user.get('lastName')}}</p>
+                                <p class="social__result__tier">EcoTier: {{user.get('ecoTier')}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+    data: function () {
+        return {
+            users: []
+        }
+    },
+    created: function () {
+        let vm = this;
+        var keywords = vm.$route.params.keyword.trim().split(' ');
+        if (keywords[0] && keywords.length === 1) {
+            var firstNameQuery = new AV.Query('_User');
+            firstNameQuery.startsWith('firstName', keywords[0]);
+            var lastNameQuery = new AV.Query('_User');
+            lastNameQuery.startsWith('lastName', keywords[0]);
+            var query = AV.Query.or(firstNameQuery, lastNameQuery);
+            query.find().then(function (results) {
+                vm.users = results;
+            })
+        }
+        else if (keywords.length >= 2) {
+            var query = new AV.Query('_User');
+            query.startsWith('firstName', keywords[0]);
+            query.startsWith('lastName', keywords[1]);
+            query.find().then(function (results) {
+                vm.users = results;
+            })
+        }
+    },
+};
+const AppUser = {
+    template: `
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>{{firstName}}'s Profile</span>
+                </div>
+                <div class="titlebar__left" @click="router.back();">
+                    <i class="fas fa-angle-left">
+                </div>
+                <div v-if="$route.params.id !== AV.User.current().id" class="titlebar__right" @click="follow()">
+                    <i :class="['fas', following ? 'fa-user-minus' : 'fa-user-plus' ]"></i>
+                </div>
+            </div>
+            <div class="content">
+                <div class="profile__header">
+                    <div class="profile__header__image">
+                        <img :src="profilePicture ? profilePicture.url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
+                    </div>
+                    <div class="profile__header__info">
+                        <p class="profile__header__name">{{firstName}} {{lastName}}</p>
+                        <p class="profile__header__tier">EcoTier: {{ecoTier}}</p>
+                        <p class="profile__header__social"><span>{{followers.length}} Followers</span><span>{{followees.length}} Following</span></p>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <div v-for="achievement in achievements">
+                        <div class="profile__achievement">
+                            <div class="profile__achievement__info">
+                                <p class="profile__achievement__info__text">Achieved a new {{achievement.get('content').type}}!</p>
+                                <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{achievement.get('content').tier}}</p>
+                                <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{achievement.get('content').days}}</p>
+                                <p @click="like(achievement)" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{achievement.get('likedBy').length}}</p>
+                            </div>
+                            <div class="profile__achievement__icon">
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+    data: function () {
+        return {
+            profilePicture: new AV.File(),
+            ecoTier: '',
+            firstName: '',
+            lastName: '',
+            followers: [],
+            followees: [],
+            achievements: [],
+            following: false
+        };
+    },
+    created: function () {
+        let vm = this;
+        new AV.Query('_User').get(vm.$route.params.id).then(function (user) {
+            vm.profilePicture = user.get('profilePicture');
+            vm.ecoTier = user.get('ecoTier');
+            vm.firstName = user.get('firstName');
+            vm.lastName = user.get('lastName');
+            var achievementQuery = new AV.Query('Achievement');
+            achievementQuery.equalTo('user', user);
+            achievementQuery.descending('createdAt');
+            achievementQuery.find().then(function (results) {
+                vm.achievements = results;
+            });
+            var followeeQuery = user.followeeQuery();
+            followeeQuery.include('followee');
+            followeeQuery.find().then(function (results) {
+                vm.followees = results;
+            });
+            var followerQuery = user.followerQuery();
+            followerQuery.include('follower');
+            followerQuery.find().then(function (results) {
+                vm.followers = results;
+                for (let follower of vm.followers) {
+                    if (follower.id === AV.User.current().id) {
+                        vm.following = true;
+                    }
+                }
+            });
+        });
+    },
+    methods: {
+        like: function (achievement) {
+            var found = false;
+            for (var i = 0; i < achievement.get('likedBy').length; i++) {
+                if (achievement.get('likedBy')[i].id === AV.User.current().id) {
+                    found = true;
+                }
+            }
+            if (found) {
+                achievement.remove('likedBy', AV.User.current());
+                achievement.save();
+            }
+            else {
+                achievement.addUnique('likedBy', AV.User.current());
+                achievement.save();
+            }
+        },
+        follow: function () {
+            let vm = this;
+            if (vm.following) {
+                AV.User.current().unfollow(vm.$route.params.id).then(function () {
+                    vm.following = false;
+                });
+            }
+            else {
+                AV.User.current().follow(vm.$route.params.id).then(function () {
+                    vm.following = true;
+                });
+            }
+        }
+    }
+};
 const AppSocial = {
     template: `
-        <h1>This is social.</h1>
+        <router-view></router-view>
     `
 };
 const AppTips = {
@@ -146,19 +400,19 @@ const AppProfileHome = {
                 </div>
             </div>
             <div class="content">
-                <div id="profile__header">
-                    <div id="profile__header__image">
+                <div class="profile__header">
+                    <div class="profile__header__image">
                         <img :src="profilePicture ? profilePicture.url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'" @click="document.getElementById('profile-picture').click();">
-                        <input type="file" id="profile-picture" style="display: none;" @change="uploadProfilePicture()">
+                        <input type="file" class="profile-picture" style="display: none;" @change="uploadProfilePicture()">
                     </div>
-                    <div id="profile__header__info">
-                        <p id="profile__header__name">{{firstName}} {{lastName}}</p>
-                        <p id="profile__header__tier">EcoTier: {{ecoTier}}</p>
-                        <p id="profile__header__social"><span>{{followers.length}} Followers</span><span>{{followees.length}} Following</span></p>
+                    <div class="profile__header__info">
+                        <p class="profile__header__name">{{firstName}} {{lastName}}</p>
+                        <p class="profile__header__tier">EcoTier: {{ecoTier}}</p>
+                        <p class="profile__header__social"><span>{{followers.length}} Followers</span><span>{{followees.length}} Following</span></p>
                     </div>
                 </div>
                 <hr>
-                <div id="profile__achievements">
+                <div>
                     <div v-for="achievement in achievements">
                         <div class="profile__achievement">
                             <div class="profile__achievement__info">
@@ -189,10 +443,10 @@ const AppProfileHome = {
     },
     created: function () {
         let vm = this;
-        var ahievementQuery = new AV.Query('Achievement');
-        ahievementQuery.equalTo('user', AV.User.current());
-        ahievementQuery.descending('createdAt');
-        ahievementQuery.find().then(function (results) {
+        var achievementQuery = new AV.Query('Achievement');
+        achievementQuery.equalTo('user', AV.User.current());
+        achievementQuery.descending('createdAt');
+        achievementQuery.find().then(function (results) {
             vm.achievements = results;
         });
         var followeeQuery = AV.User.current().followeeQuery();
@@ -450,8 +704,22 @@ const router = new VueRouter({
             ]
         },
         {
+            path: '/user/:id',
+            component: AppUser
+        },
+        {
             path: '/social',
-            component: AppSocial
+            component: AppSocial,
+            children: [
+                {
+                    path: '',
+                    component: AppSocialHome
+                },
+                {
+                    path: 'results/:keyword',
+                    component: AppSocialResults
+                }
+            ]
         },
         {
             path: '/tips',
@@ -486,7 +754,7 @@ Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().th
                         <nav>
                             <ul>
                                 <li v-for="app in apps" :class="[$route.path.startsWith(app.path) ? 'active' : '']" @click="router.push(app.path);">
-                                    <img :src="'../images/' + app.icon">
+                                    <img :src="'/images/' + app.icon">
                                     <span>{{ app.name }}</span>
                                 </li>
                             </ul>
