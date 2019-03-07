@@ -200,7 +200,7 @@ const AppSocialHome = {
                 achievement.addUnique('likedBy', AV.User.current());
                 achievement.save();
             }
-        },
+        }
     }
 };
 const AppSocialResults = {
@@ -235,7 +235,7 @@ const AppSocialResults = {
     data: function () {
         return {
             users: []
-        }
+        };
     },
     created: function () {
         let vm = this;
@@ -248,7 +248,7 @@ const AppSocialResults = {
             var query = AV.Query.or(firstNameQuery, lastNameQuery);
             query.find().then(function (results) {
                 vm.users = results;
-            })
+            });
         }
         else if (keywords.length >= 2) {
             var query = new AV.Query('_User');
@@ -256,9 +256,9 @@ const AppSocialResults = {
             query.startsWith('lastName', keywords[1]);
             query.find().then(function (results) {
                 vm.users = results;
-            })
+            });
         }
-    },
+    }
 };
 const AppUser = {
     template: `
