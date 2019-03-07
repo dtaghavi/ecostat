@@ -401,9 +401,9 @@ const AppProfileHome = {
             </div>
             <div class="content">
                 <div class="profile__header">
-                    <div id="profile__header__image" class="profile__header__image">
+                    <div class="profile__header__image">
                         <img :src="profilePicture ? profilePicture.url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'" @click="document.getElementById('profile__header__image').click();">
-                        <input type="file" style="display: none;" @change="uploadProfilePicture()">
+                        <input id="profile__header__image" type="file" style="display: none;" @change="uploadProfilePicture()">
                     </div>
                     <div class="profile__header__info">
                         <p class="profile__header__name">{{firstName}} {{lastName}}</p>
