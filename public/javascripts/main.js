@@ -401,9 +401,9 @@ const AppProfileHome = {
             </div>
             <div class="content">
                 <div class="profile__header">
-                    <div class="profile__header__image">
-                        <img :src="profilePicture ? profilePicture.url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'" @click="document.getElementById('profile-picture').click();">
-                        <input type="file" class="profile-picture" style="display: none;" @change="uploadProfilePicture()">
+                    <div id="profile__header__image" class="profile__header__image">
+                        <img :src="profilePicture ? profilePicture.url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'" @click="document.getElementById('profile__header__image').click();">
+                        <input type="file" style="display: none;" @change="uploadProfilePicture()">
                     </div>
                     <div class="profile__header__info">
                         <p class="profile__header__name">{{firstName}} {{lastName}}</p>
@@ -479,7 +479,7 @@ const AppProfileHome = {
         },
         uploadProfilePicture: function () {
             let vm = this;
-            var file = new AV.File(name, document.getElementById('profile-picture').files[0]);
+            var file = new AV.File(name, document.getElementById('profile__header__image').files[0]);
             file.save().then(function (file) {
                 AV.User.current().set('profilePicture', file);
                 AV.User.current().save().then(function () {
