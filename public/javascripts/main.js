@@ -23,7 +23,7 @@ const AppHomeHome = {
                     <span id="home__card__score__total">/ 120</span>
                 </p>
                 <p id="home__card__info">My Usage</p>
-                <div class="home__card__item" @click="router.push('/home/electric');">
+                <div class="home__card__item" @click="router.push('/home/electricity');">
                     <div class="home__card__item__icon">
                         <i class="fas fa-bolt"></i>
                     </div>
@@ -66,7 +66,7 @@ const AppHomeHome = {
         </div>
     `
 };
-const AppHomeElectric = {
+const AppHomeElectricity = {
     template: `
         <div>
             <div class="titlebar">
@@ -129,7 +129,7 @@ const AppSocialHome = {
         <div>
             <div class="titlebar">
                 <div class="titlebar__title">
-                    <span>Friends Eco Accomplishments</span>
+                    <span>Friends' Eco Accomplishments</span>
                 </div>
             </div>
             <div class="content">
@@ -139,27 +139,29 @@ const AppSocialHome = {
                             <i class="fas fa-search"></i>
                             <input placeholder="Search" v-model="keyword">
                         </div>
-                        <p id="social__searchbar__search" @click="router.push('/social/results/' + keyword)">Search</p>
+                        <span id="social__searchbar__search" @click="router.push('/social/results/' + keyword);">Search</span>
                     </div>
                 </div>
                 <hr>
                 <div>
                     <div v-for="achievement in achievements">
-                        <div class="profile__achievement">
-                            <div class="profile__achievement__image" @click="router.push('/user/' + achievement.get('user').id)">
-                                <img :src="achievement.get('user').get('profilePicture') ? achievement.get('user').get('profilePicture').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
+                        <div v-if="achievement.get('user').get('showAchievements')">
+                            <div class="profile__achievement">
+                                <div class="profile__achievement__image" @click="router.push('/user/' + achievement.get('user').id);">
+                                    <img :src="achievement.get('user').get('profilePicture') ? achievement.get('user').get('profilePicture').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
+                                </div>
+                                <div class="profile__achievement__info">
+                                    <p style="color: #49a187;" class="profile__achievement__info__text" @click="router.push('/user/' + achievement.get('user').id);">{{ achievement.get('user').get('firstName') }} {{ achievement.get('user').get('lastName') }}</p>
+                                    <p class="profile__achievement__info__text">Achieved a new {{ achievement.get('content').type }}!</p>
+                                    <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{ achievement.get('content').tier }}</p>
+                                    <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{ achievement.get('content').days }}</p>
+                                    <p @click="like(achievement);" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{ achievement.get('likedBy').length }}</p>
+                                </div>
+                                <div class="profile__achievement__icon">
+                                </div>
                             </div>
-                            <div class="profile__achievement__info">
-                                <p style="color: #49a187;" class="profile__achievement__info__text" @click="router.push('/user/' + achievement.get('user').id)">{{achievement.get('user').get('firstName')}} {{achievement.get('user').get('lastName')}}</p>
-                                <p class="profile__achievement__info__text">Achieved a new {{achievement.get('content').type}}!</p>
-                                <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{achievement.get('content').tier}}</p>
-                                <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{achievement.get('content').days}}</p>
-                                <p @click="like(achievement)" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{achievement.get('likedBy').length}}</p>
-                            </div>
-                            <div class="profile__achievement__icon">
-                            </div>
+                            <hr>
                         </div>
-                        <hr>
                     </div>
                 </div>
             </div>
@@ -173,21 +175,21 @@ const AppSocialHome = {
     },
     created: function () {
         let vm = this;
-        var followeeQuery = AV.User.current().followeeQuery();
-        followeeQuery.find().then(function (results) {
-            var achievementsQuery = new AV.Query('Achievement');
-            achievementsQuery.include('user');
-            achievementsQuery.containedIn('user', results);
-            achievementsQuery.descending('createdAt');
-            achievementsQuery.find().then(function (results) {
-                vm.achievements = results;
+        let followeeQuery = AV.User.current().followeeQuery();
+        followeeQuery.find().then(function (followees) {
+            let achievementQuery = new AV.Query('Achievement');
+            achievementQuery.include('user');
+            achievementQuery.containedIn('user', followees);
+            achievementQuery.descending('createdAt');
+            achievementQuery.find().then(function (achievements) {
+                vm.achievements = achievements;
             });
         });
     },
     methods: {
         like: function (achievement) {
-            var found = false;
-            for (var i = 0; i < achievement.get('likedBy').length; i++) {
+            let found = false;
+            for (let i = 0; i < achievement.get('likedBy').length; i++) {
                 if (achievement.get('likedBy')[i].id === AV.User.current().id) {
                     found = true;
                 }
@@ -217,13 +219,13 @@ const AppSocialResults = {
             <div class="content">
                 <div>
                     <div v-for="user in users">
-                        <div class="social__result" @click="router.push('/user/' + user.id)">
+                        <div class="social__result" @click="router.push('/user/' + user.id);">
                             <div class="social__result__image">
                                 <img :src="user.get('profilePicture') ? user.get('profilePicture').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
                             </div>
                             <div class="social__result__info">
-                                <p class="socia__result__name">{{user.get('firstName')}} {{user.get('lastName')}}</p>
-                                <p class="social__result__tier">EcoTier: {{user.get('ecoTier')}}</p>
+                                <p class="socia__result__name">{{ user.get('firstName') }} {{ user.get('lastName') }}</p>
+                                <p class="social__result__tier">EcoTier: {{ user.get('ecoTier') }}</p>
                             </div>
                         </div>
                         <hr>
@@ -239,23 +241,23 @@ const AppSocialResults = {
     },
     created: function () {
         let vm = this;
-        var keywords = vm.$route.params.keyword.trim().split(' ');
+        let keywords = vm.$route.params.keyword.trim().split(' ');
         if (keywords[0] && keywords.length === 1) {
-            var firstNameQuery = new AV.Query('_User');
+            let firstNameQuery = new AV.Query('_User');
             firstNameQuery.startsWith('firstName', keywords[0]);
-            var lastNameQuery = new AV.Query('_User');
+            let lastNameQuery = new AV.Query('_User');
             lastNameQuery.startsWith('lastName', keywords[0]);
-            var query = AV.Query.or(firstNameQuery, lastNameQuery);
-            query.find().then(function (results) {
-                vm.users = results;
+            let userQuery = AV.Query.or(firstNameQuery, lastNameQuery);
+            userQuery.find().then(function (users) {
+                vm.users = users;
             });
         }
         else if (keywords.length >= 2) {
-            var query = new AV.Query('_User');
-            query.startsWith('firstName', keywords[0]);
-            query.startsWith('lastName', keywords[1]);
-            query.find().then(function (results) {
-                vm.users = results;
+            let userQuery = new AV.Query('_User');
+            userQuery.startsWith('firstName', keywords[0]);
+            userQuery.startsWith('lastName', keywords[1]);
+            userQuery.find().then(function (users) {
+                vm.users = users;
             });
         }
     }
@@ -265,12 +267,12 @@ const AppUser = {
         <div>
             <div class="titlebar">
                 <div class="titlebar__title">
-                    <span>{{firstName}}'s Profile</span>
+                    <span>{{ firstName }}'s Profile</span>
                 </div>
                 <div class="titlebar__left" @click="router.back();">
                     <i class="fas fa-angle-left">
                 </div>
-                <div v-if="$route.params.id !== AV.User.current().id" class="titlebar__right" @click="follow()">
+                <div v-if="$route.params.id !== AV.User.current().id" class="titlebar__right" @click="follow();">
                     <i :class="['fas', following ? 'fa-user-minus' : 'fa-user-plus' ]"></i>
                 </div>
             </div>
@@ -280,20 +282,20 @@ const AppUser = {
                         <img :src="profilePicture ? profilePicture.url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
                     </div>
                     <div class="profile__header__info">
-                        <p class="profile__header__name">{{firstName}} {{lastName}}</p>
-                        <p class="profile__header__tier">EcoTier: {{ecoTier}}</p>
-                        <p class="profile__header__social"><span>{{followers.length}} Followers</span><span>{{followees.length}} Following</span></p>
+                        <p class="profile__header__name">{{ firstName }} {{ lastName }}</p>
+                        <p v-if="displayEcoStatus" class="profile__header__tier">EcoTier: {{ ecoTier }}</p>
+                        <p class="profile__header__social"><span>{{ followers.length }} Followers</span><span>{{ followees.length }} Following</span></p>
                     </div>
                 </div>
                 <hr>
-                <div>
+                <div v-if="showAchievements">
                     <div v-for="achievement in achievements">
-                        <div class="profile__achievement">
-                            <div class="profile__achievement__info">
-                                <p class="profile__achievement__info__text">Achieved a new {{achievement.get('content').type}}!</p>
-                                <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{achievement.get('content').tier}}</p>
-                                <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{achievement.get('content').days}}</p>
-                                <p @click="like(achievement)" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{achievement.get('likedBy').length}}</p>
+                        <div class="profile__achievement" style="height: 96px;">
+                            <div class="profile__achievement__info" style="left: 16px;">
+                                <p class="profile__achievement__info__text">Achieved a new {{ achievement.get('content').type }}!</p>
+                                <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{ achievement.get('content').tier }}</p>
+                                <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{ achievement.get('content').days }}</p>
+                                <p @click="like(achievement);" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{ achievement.get('likedBy').length }}</p>
                             </div>
                             <div class="profile__achievement__icon">
                             </div>
@@ -306,6 +308,8 @@ const AppUser = {
     `,
     data: function () {
         return {
+            displayEcoStatus: false,
+            showAchievements: false,
             profilePicture: new AV.File(),
             ecoTier: '',
             firstName: '',
@@ -319,25 +323,27 @@ const AppUser = {
     created: function () {
         let vm = this;
         new AV.Query('_User').get(vm.$route.params.id).then(function (user) {
+            vm.displayEcoStatus = user.get('displayEcoStatus');
+            vm.showAchievements = user.get('showAchievements');
             vm.profilePicture = user.get('profilePicture');
             vm.ecoTier = user.get('ecoTier');
             vm.firstName = user.get('firstName');
             vm.lastName = user.get('lastName');
-            var achievementQuery = new AV.Query('Achievement');
+            let achievementQuery = new AV.Query('Achievement');
             achievementQuery.equalTo('user', user);
             achievementQuery.descending('createdAt');
-            achievementQuery.find().then(function (results) {
-                vm.achievements = results;
+            achievementQuery.find().then(function (achievements) {
+                vm.achievements = achievements;
             });
-            var followeeQuery = user.followeeQuery();
+            let followeeQuery = user.followeeQuery();
             followeeQuery.include('followee');
-            followeeQuery.find().then(function (results) {
-                vm.followees = results;
+            followeeQuery.find().then(function (followees) {
+                vm.followees = followees;
             });
-            var followerQuery = user.followerQuery();
+            let followerQuery = user.followerQuery();
             followerQuery.include('follower');
-            followerQuery.find().then(function (results) {
-                vm.followers = results;
+            followerQuery.find().then(function (followers) {
+                vm.followers = followers;
                 for (let follower of vm.followers) {
                     if (follower.id === AV.User.current().id) {
                         vm.following = true;
@@ -348,8 +354,8 @@ const AppUser = {
     },
     methods: {
         like: function (achievement) {
-            var found = false;
-            for (var i = 0; i < achievement.get('likedBy').length; i++) {
+            let found = false;
+            for (let i = 0; i < achievement.get('likedBy').length; i++) {
                 if (achievement.get('likedBy')[i].id === AV.User.current().id) {
                     found = true;
                 }
@@ -383,9 +389,87 @@ const AppSocial = {
         <router-view></router-view>
     `
 };
+const AppTipsHome = {
+    template: `
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Tips</span>
+                </div>
+            </div>
+            <div class="content">
+                <p class="tips__subtitle">Featured Tips</p>
+                <div id="tips__featured-tips">
+                    <div v-for="tip of tips" class="tips__featured-tip">
+                        <div class="tips__featured-tip__card" :style="{ backgroundImage: 'url(' + tip.get('image').url() + ')' }"></div>
+                        <span>{{ tip.get('title') }}</span>
+                    </div>
+                </div>
+                <hr>
+                <p class="tips__subtitle">Tips by Utility</p>
+                <div id="tips__utilities">
+                    <div class="tips__utility" @click="router.push('/tips/utility/water');">
+                        <div class="tips__utility__card">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <span>Water</span>
+                    </div>
+                    <div class="tips__utility" @click="router.push('/tips/utility/gas');">
+                        <div class="tips__utility__card">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <span>Gas</span>
+                    </div>
+                    <div class="tips__utility" @click="router.push('/tips/utility/electricity');">
+                        <div class="tips__utility__card">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span>Electricity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+    data: function () {
+        return {
+            tips: []
+        };
+    },
+    created: function () {
+        let vm = this;
+        let tipQuery = new AV.Query('Tip');
+        tipQuery.find().then(function (tips) {
+            vm.tips = tips;
+        });
+    }
+};
+const AppTipsUtility = {
+    template: `
+        <div>
+        </div>
+    `,
+    data: function () {
+        return {
+            tips: []
+        };
+    }
+};
+const AppTipsTip = {
+    template: `
+        <div>
+        </div>
+    `,
+    data: function () {
+        return {
+            image: '',
+            title: '',
+            content: ''
+        };
+    }
+};
 const AppTips = {
     template: `
-        <h1>This is tips.</h1>
+        <router-view></router-view>
     `
 };
 const AppProfileHome = {
@@ -406,20 +490,20 @@ const AppProfileHome = {
                         <input id="profile__header__image" type="file" style="display: none;" @change="uploadProfilePicture()">
                     </div>
                     <div class="profile__header__info">
-                        <p class="profile__header__name">{{firstName}} {{lastName}}</p>
-                        <p class="profile__header__tier">EcoTier: {{ecoTier}}</p>
-                        <p class="profile__header__social"><span>{{followers.length}} Followers</span><span>{{followees.length}} Following</span></p>
+                        <p class="profile__header__name">{{ firstName }} {{ lastName }}</p>
+                        <p class="profile__header__tier">EcoTier: {{ ecoTier }}</p>
+                        <p class="profile__header__social"><span>{{ followers.length }} Followers</span><span>{{ followees.length }} Following</span></p>
                     </div>
                 </div>
                 <hr>
                 <div>
                     <div v-for="achievement in achievements">
-                        <div class="profile__achievement">
-                            <div class="profile__achievement__info">
-                                <p class="profile__achievement__info__text">Achieved a new {{achievement.get('content').type}}!</p>
-                                <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{achievement.get('content').tier}}</p>
-                                <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{achievement.get('content').days}}</p>
-                                <p @click="like(achievement)" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{achievement.get('likedBy').length}}</p>
+                        <div class="profile__achievement" style="height: 96px;">
+                            <div class="profile__achievement__info" style="left: 16px;">
+                                <p class="profile__achievement__info__text">Achieved a new {{ achievement.get('content').type }}!</p>
+                                <p v-if="achievement.get('content').type === 'EcoStatus'" class="profile__achievement__info__text">Tier: {{ achievement.get('content').tier }}</p>
+                                <p v-if="achievement.get('content').type === 'Streak'" class="profile__achievement__info__text">Days: {{ achievement.get('content').days }}</p>
+                                <p @click="like(achievement);" class="profile__achievement__info__text"><i class="far fa-heart"></i> {{ achievement.get('likedBy').length }}</p>
                             </div>
                             <div class="profile__achievement__icon">
                             </div>
@@ -443,27 +527,27 @@ const AppProfileHome = {
     },
     created: function () {
         let vm = this;
-        var achievementQuery = new AV.Query('Achievement');
+        let achievementQuery = new AV.Query('Achievement');
         achievementQuery.equalTo('user', AV.User.current());
         achievementQuery.descending('createdAt');
-        achievementQuery.find().then(function (results) {
-            vm.achievements = results;
+        achievementQuery.find().then(function (achievements) {
+            vm.achievements = achievements;
         });
-        var followeeQuery = AV.User.current().followeeQuery();
+        let followeeQuery = AV.User.current().followeeQuery();
         followeeQuery.include('followee');
-        followeeQuery.find().then(function (results) {
-            vm.followees = results;
+        followeeQuery.find().then(function (followees) {
+            vm.followees = followees;
         });
-        var followerQuery = AV.User.current().followerQuery();
+        let followerQuery = AV.User.current().followerQuery();
         followerQuery.include('follower');
-        followerQuery.find().then(function (results) {
-            vm.followers = results;
+        followerQuery.find().then(function (followers) {
+            vm.followers = followers;
         });
     },
     methods: {
         like: function (achievement) {
-            var found = false;
-            for (var i = 0; i < achievement.get('likedBy').length; i++) {
+            let found = false;
+            for (let i = 0; i < achievement.get('likedBy').length; i++) {
                 if (achievement.get('likedBy')[i].id === AV.User.current().id) {
                     found = true;
                 }
@@ -479,7 +563,7 @@ const AppProfileHome = {
         },
         uploadProfilePicture: function () {
             let vm = this;
-            var file = new AV.File(name, document.getElementById('profile__header__image').files[0]);
+            let file = new AV.File(name, document.getElementById('profile__header__image').files[0]);
             file.save().then(function (file) {
                 AV.User.current().set('profilePicture', file);
                 AV.User.current().save().then(function () {
@@ -536,9 +620,9 @@ const AppProfileSettings = {
                         <input class="settings__item__value" :value="householdSize" @input="householdSize = parseInt($event.target.value) || 0;"></input>
                     </div>
                     <hr>
-                    <div class="settings__item">
+                    <div class="settings__item" @click="changePassword();">
                         <span class="settings__item__name">Change Password</span>
-                        <span class="settings__item__right" @click="changePassword()"><i class="fas fa-angle-right"></i></span>
+                        <span class="settings__item__right"><i class="fas fa-angle-right"></i></span>
                     </div>
                     <hr>
                     <div class="settings__item" @click="logOut();">
@@ -655,14 +739,14 @@ const AppProfileSettings = {
             }
         },
         changePassword: function () {
-            var tempPass = prompt('Enter new password:');
+            let tempPass = prompt('Enter new password:');
             if (tempPass) {
-                var tempPass2 = prompt('Enter new password again:');
+                let tempPass2 = prompt('Enter new password again:');
                 if (tempPass2) {
                     if (tempPass === tempPass2) {
                         AV.User.current().set('password', tempPass);
                         AV.User.current().save().then(function () {
-                            alert('Password Changed');
+                            alert('Password changed.');
                         });
                     }
                     else {
@@ -690,8 +774,8 @@ const router = new VueRouter({
                     component: AppHomeHome
                 },
                 {
-                    path: 'electric',
-                    component: AppHomeElectric
+                    path: 'electricity',
+                    component: AppHomeElectricity
                 },
                 {
                     path: 'gas',
@@ -723,7 +807,21 @@ const router = new VueRouter({
         },
         {
             path: '/tips',
-            component: AppTips
+            component: AppTips,
+            children: [
+                {
+                    path: '',
+                    component: AppTipsHome
+                },
+                {
+                    path: '/utility/:name',
+                    component: AppTipsUtility
+                },
+                {
+                    path: '/tip/:id',
+                    component: AppTipsTip
+                }
+            ]
         },
         {
             path: '/profile',

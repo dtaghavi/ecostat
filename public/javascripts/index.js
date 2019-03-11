@@ -25,7 +25,6 @@ new Vue({
         </div>
     `,
     created: function () {
-        let vm = this;
         Promise.resolve(AV.User.current()).then(user => user ? user.isAuthenticated().then(authenticated => authenticated ? user : null) : null).then(user => {
             if (user) {
                 location.href = '/home';
