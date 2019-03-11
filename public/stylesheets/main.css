@@ -369,6 +369,7 @@ hr {
 }
 .tips__featured-tip {
     margin: 0 0 0 16px;
+    width: 256px;
     display: inline-block;
 }
 .tips__featured-tip:nth-of-type(1) {
@@ -380,11 +381,12 @@ hr {
     background-size: cover;
     border-radius: 4px;
 }
-.tips__featured-tip span {
-    display: inline-block;
-    width: 100%;
+.tips__featured-tip p {
+    font-weight: bold;
+    width: 256px;
     color: #333;
-    line-height: 36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #tips__utilities {
     display: table;
@@ -438,7 +440,7 @@ hr {
     border-radius: 4px;
 }
 .utility__tip h1 {
-    top: 32px;
+    top: 16px;
     right: 16px;
     left: 160px;
     position: absolute;

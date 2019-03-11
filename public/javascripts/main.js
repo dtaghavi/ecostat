@@ -402,7 +402,7 @@ const AppTipsHome = {
                 <div id="tips__featured-tips">
                     <div v-for="tip in tips" class="tips__featured-tip" @click="router.push('/tips/tip/' + tip.id);">
                         <div class="tips__featured-tip__card" :style="{ backgroundImage: 'url(' + (tip.get('image') ? tip.get('image').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y') + ')' }"></div>
-                        <span>{{ tip.get('title') }}</span>
+                        <p>{{ tip.get('title') }}</p>
                     </div>
                 </div>
                 <hr>
