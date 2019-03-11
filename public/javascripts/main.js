@@ -400,7 +400,7 @@ const AppTipsHome = {
             <div class="content">
                 <p class="tips__subtitle">Featured Tips</p>
                 <div id="tips__featured-tips">
-                    <div v-for="tip of tips" class="tips__featured-tip" @click="router.push('/tips/tip/' + tip.id);">
+                    <div v-for="tip in tips" class="tips__featured-tip" @click="router.push('/tips/tip/' + tip.id);">
                         <div class="tips__featured-tip__card" :style="{ backgroundImage: 'url(' + (tip.get('image') ? tip.get('image').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y') + ')' }"></div>
                         <span>{{ tip.get('title') }}</span>
                     </div>
@@ -456,7 +456,7 @@ const AppTipsUtility = {
                 </div>
             </div>
             <div class="content">
-                <div v-for="tip of tips" class="utility__tip" @click="router.push('/tips/tip/' + tip.id);">
+                <div v-for="tip in tips" class="utility__tip" @click="router.push('/tips/tip/' + tip.id);">
                     <div :style="{ backgroundImage: 'url(' + (tip.get('image') ? tip.get('image').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y') + ')' }"></div>
                     <h1>{{ tip.get('title') }}</h1>
                     <hr>
