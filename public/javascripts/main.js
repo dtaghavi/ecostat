@@ -439,6 +439,7 @@ const AppTipsHome = {
         let vm = this;
         let tipQuery = new AV.Query('Tip');
         tipQuery.descending('createdAt');
+        tipQuery.limit(5);
         tipQuery.find().then(function (tips) {
             vm.tips = tips;
         });
