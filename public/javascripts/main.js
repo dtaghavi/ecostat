@@ -78,9 +78,6 @@ const AppHomeElectricity = {
                 </div>
             </div>
             <div class="content">
-                <div class="home__utility__datebar">
-                    <span :class="currentView === 0 ? 'active' : ''" @click="currentView = 0;">D</span><span :class="currentView === 1 ? 'active' : ''" @click="currentView = 1;">W</span><span :class="currentView === 2 ? 'active' : ''" @click="currentView = 2;">M</span><span :class="currentView === 3 ? 'active' : ''" @click="currentView = 3;">Y</span>
-                </div>
                 <div class="home__utility__graph">
                     <p>Graph will be here.</p>
                     <p>Current 13.4 kWh Est. Cost $3.80</p>
@@ -105,7 +102,7 @@ const AppHomeElectricity = {
     `,
     data: function () {
         return {
-            currentView: 0
+            
         };
     }
 };

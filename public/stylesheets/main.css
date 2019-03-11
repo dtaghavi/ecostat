@@ -241,28 +241,6 @@ hr {
 .home__card__item__score__my {
     font-size: 18pt;
 }
-.home__utility__datebar {
-    position: relative;
-    margin: 12px 12px;
-    text-align: center;
-    border: 1px solid #49a187;
-    border-radius: 4px;
-    height: 36px;
-    overflow: hidden;
-}
-.home__utility__datebar span {
-    display: inline-block;
-    width: 25%;
-    line-height: 36px;
-}
-.home__utility__datebar span:nth-child(1),
-.home__utility__datebar span:nth-child(2),
-.home__utility__datebar span:nth-child(3) {
-    border-right: 1px solid #49a187;
-}
-.home__utility__datebar span.active {
-    background-color: rgba(73, 161, 135, 0.4);
-}
 .home__utility__graph {
     position: relative;
     height: 240px;
