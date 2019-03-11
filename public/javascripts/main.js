@@ -139,7 +139,7 @@ const AppSocialHome = {
                             <i class="fas fa-search"></i>
                             <input placeholder="Search" v-model="keyword">
                         </div>
-                        <span id="social__searchbar__search" @click="router.push('/social/results/' + keyword);">Search</span>
+                        <span id="social__searchbar__search" @click="router.push('/social/search/' + keyword);">Search</span>
                     </div>
                 </div>
                 <hr>
@@ -205,7 +205,7 @@ const AppSocialHome = {
         }
     }
 };
-const AppSocialResults = {
+const AppSocialSearch = {
     template: `
         <div>
             <div class="titlebar">
@@ -262,6 +262,96 @@ const AppSocialResults = {
         }
     }
 };
+const AppSocialFollowers = {
+    template: `
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Followers</span>
+                </div>
+                <div class="titlebar__left" @click="router.back();">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+            <div class="content">
+                <div>
+                    <div v-for="user in users">
+                        <div class="social__result" @click="router.push('/user/' + user.id);">
+                            <div class="social__result__image">
+                                <img :src="user.get('profilePicture') ? user.get('profilePicture').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
+                            </div>
+                            <div class="social__result__info">
+                                <p class="socia__result__name">{{ user.get('firstName') }} {{ user.get('lastName') }}</p>
+                                <p class="social__result__tier">EcoTier: {{ user.get('ecoTier') }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+    data: function () {
+        return {
+            users: []
+        };
+    },
+    created: function () {
+        let vm = this;
+        new AV.Query('_User').get(vm.$route.params.id).then(function (user) {
+            let followerQuery = user.followerQuery();
+            followerQuery.include('follower');
+            followerQuery.find().then(function (followers) {
+                vm.users = followers;
+            });
+        });
+    }
+};
+const AppSocialFollowing = {
+    template: `
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Following</span>
+                </div>
+                <div class="titlebar__left" @click="router.back();">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+            <div class="content">
+                <div>
+                    <div v-for="user in users">
+                        <div class="social__result" @click="router.push('/user/' + user.id);">
+                            <div class="social__result__image">
+                                <img :src="user.get('profilePicture') ? user.get('profilePicture').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'">
+                            </div>
+                            <div class="social__result__info">
+                                <p class="socia__result__name">{{ user.get('firstName') }} {{ user.get('lastName') }}</p>
+                                <p class="social__result__tier">EcoTier: {{ user.get('ecoTier') }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+    data: function () {
+        return {
+            users: []
+        };
+    },
+    created: function () {
+        let vm = this;
+        new AV.Query('_User').get(vm.$route.params.id).then(function (user) {
+            let followeeQuery = user.followeeQuery();
+            followeeQuery.include('followee');
+            followeeQuery.find().then(function (followees) {
+                vm.users = followees;
+            });
+        });
+    }
+};
 const AppUser = {
     template: `
         <div>
@@ -284,7 +374,7 @@ const AppUser = {
                     <div class="profile__header__info">
                         <p class="profile__header__name">{{ firstName }} {{ lastName }}</p>
                         <p v-if="displayEcoStatus" class="profile__header__tier">EcoTier: {{ ecoTier }}</p>
-                        <p class="profile__header__social"><span>{{ followers.length }} Followers</span><span>{{ followees.length }} Following</span></p>
+                        <p class="profile__header__social"><span @click="router.push('/social/followers/' + $route.params.id);">{{ followers.length }} Followers</span><span @click="router.push('/social/following/' + $route.params.id);">{{ followees.length }} Following</span></p>
                     </div>
                 </div>
                 <hr>
@@ -541,7 +631,7 @@ const AppProfileHome = {
                     <div class="profile__header__info">
                         <p class="profile__header__name">{{ firstName }} {{ lastName }}</p>
                         <p class="profile__header__tier">EcoTier: {{ ecoTier }}</p>
-                        <p class="profile__header__social"><span>{{ followers.length }} Followers</span><span>{{ followees.length }} Following</span></p>
+                        <p class="profile__header__social"><span @click="router.push('/social/followers/' + AV.User.current().id);">{{ followers.length }} Followers</span><span @click="router.push('/social/following/' + AV.User.current().id);">{{ followees.length }} Following</span></p>
                     </div>
                 </div>
                 <hr>
@@ -849,8 +939,16 @@ const router = new VueRouter({
                     component: AppSocialHome
                 },
                 {
-                    path: 'results/:keyword',
-                    component: AppSocialResults
+                    path: 'search/:keyword',
+                    component: AppSocialSearch
+                },
+                {
+                    path: 'followers/:id',
+                    component: AppSocialFollowers
+                },
+                {
+                    path: 'following/:id',
+                    component: AppSocialFollowing
                 }
             ]
         },
