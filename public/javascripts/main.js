@@ -12,14 +12,14 @@ const AppHomeHome = {
                 <div id="home__stat__circle">
                     <svg id="home__stat__circle__ring">
                         <circle id="home__stat__circle__ring__total" cx="50%" cy="50%" r="50%"></circle>
-                        <circle id="home__stat__circle__ring__my" cx="50%" cy="50%" r="50%"></circle>
+                        <circle id="home__stat__circle__ring__my" cx="50%" cy="50%" r="50%" :style="{ strokeDasharray: (706.86 - 706.86 * (120 - totalScore) / 120) + ' ' + (235.62 + 706.86 * (120 - totalScore) / 120) }"></circle>
                     </svg>
-                    <img id="home__stat__circle__tree" src="../images/tree.png">
+                    <img id="home__stat__circle__tree" :src="'../images/trees/' + Math.floor(totalScore / 120 * 10) + '.png'">
                 </div>
             </div>
             <div id="home__card">
                 <p id="home__card__score">
-                    <span id="home__card__score__my">101</span>
+                    <span id="home__card__score__my">{{ totalScore }}</span>
                     <span id="home__card__score__total">/ 120</span>
                 </p>
                 <p id="home__card__info">My Usage</p>
@@ -29,10 +29,10 @@ const AppHomeHome = {
                     </div>
                     <div class="home__card__item__info">
                         <p class="home__card__item__info__category">Southern California Edison</p>
-                        <p class="home__card__item__info__amount">3.14 kWh</p>
+                        <p class="home__card__item__info__amount">{{ AV.User.current().get('usage').electricity.current }} kWh</p>
                     </div>
                     <div class="home__card__item__score">
-                        <span class="home__card__item__score__my">32</span>
+                        <span class="home__card__item__score__my">{{ AV.User.current().get('usage').electricity.score }}</span>
                         <span class="home__card__item__score__total"> / 40</span>
                     </div>
                 </div>
@@ -42,10 +42,10 @@ const AppHomeHome = {
                     </div>
                     <div class="home__card__item__info">
                         <p class="home__card__item__info__category">Southern California Gas</p>
-                        <p class="home__card__item__info__amount">3.14 Ccf</p>
+                        <p class="home__card__item__info__amount">{{ AV.User.current().get('usage').gas.current }} Ccf</p>
                     </div>
                     <div class="home__card__item__score">
-                        <span class="home__card__item__score__my">40</span>
+                        <span class="home__card__item__score__my">{{ AV.User.current().get('usage').gas.score }}</span>
                         <span class="home__card__item__score__total"> / 40</span>
                     </div>
                 </div>
@@ -55,16 +55,21 @@ const AppHomeHome = {
                     </div>
                     <div class="home__card__item__info">
                         <p class="home__card__item__info__category">Irvine Ranch Water District</p>
-                        <p class="home__card__item__info__amount">3.14 gal</p>
+                        <p class="home__card__item__info__amount">{{ AV.User.current().get('usage').water.current }} gal</p>
                     </div>
                     <div class="home__card__item__score">
-                        <span class="home__card__item__score__my">29</span>
+                        <span class="home__card__item__score__my">{{ AV.User.current().get('usage').water.score }}</span>
                         <span class="home__card__item__score__total"> / 40</span>
                     </div>
                 </div>
             </div>
         </div>
-    `
+    `,
+    computed: {
+        totalScore: function () {
+            return AV.User.current().get('usage').electricity.score + AV.User.current().get('usage').gas.score + AV.User.current().get('usage').water.score;
+        }
+    }
 };
 const AppHomeElectricity = {
     template: `
@@ -80,7 +85,16 @@ const AppHomeElectricity = {
             <div class="content">
                 <div class="home__utility__graph">
                     <p>Graph will be here.</p>
-                    <p>Current 13.4 kWh Est. Cost $3.80</p>
+                </div>
+                <div class="home__utility__description">
+                    <div class="home__utility__description__section">
+                        <span class="home__utility__description__text">Current</span>
+                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').electricity.current > 9 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').electricity.current }} <span style="font-size: 10pt; font-weight: normal;">kWh</span></span>
+                    </div>
+                    <div class="home__utility__description__section">
+                        <span class="home__utility__description__text">Est. Cost</span>
+                        <span class="home__utility__description__number">\${{ AV.User.current().get('usage').electricity.cost.toFixed(2) }}</span>
+                    </div>
                 </div>
                 <hr>
                 <div class="home__utility__bar">
@@ -89,31 +103,110 @@ const AppHomeElectricity = {
                 <div class="home__utility__info">
                     <div>
                         <p>EcoLimit</p>
-                        <p>You have exceeded your daily usage of 9 kWh</p>
+                        <p>You <span :style="{ color: AV.User.current().get('usage').electricity.current > 9 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').electricity.current > 9 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 9 kWh</p>
                     </div>
-                    <div>
+                    <div style="border-left: 1px solid lightgrey;">
                         <p>EcoScore</p>
-                        <span>32</span>
-                        <span> / 40</span>
+                        <p class="home__utility__info__score">
+                            <span style="font-size: 28pt;">{{ AV.User.current().get('usage').electricity.score }}</span>
+                            <span> / 40</span>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    `,
-    data: function () {
-        return {
-            
-        };
-    }
+    `
 };
 const AppHomeGas = {
     template: `
-        <h1>This is gas.</h1>
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Gas Usage</span>
+                </div>
+                <div class="titlebar__left" @click="router.back();">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+            <div class="content">
+                <div class="home__utility__graph">
+                    <p>Graph will be here.</p>
+                </div>
+                <div class="home__utility__description">
+                    <div class="home__utility__description__section">
+                        <span class="home__utility__description__text">Current</span>
+                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').gas.current > 200 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').gas.current }} <span style="font-size: 10pt; font-weight: normal;">Ccf</span></span>
+                    </div>
+                    <div class="home__utility__description__section">
+                        <span class="home__utility__description__text">Est. Cost</span>
+                        <span class="home__utility__description__number">\${{ AV.User.current().get('usage').gas.cost.toFixed(2) }}</span>
+                    </div>
+                </div>
+                <hr>
+                <div class="home__utility__bar">
+                    <p> Bar will go here</p>
+                </div>
+                <div class="home__utility__info">
+                    <div>
+                        <p>EcoLimit</p>
+                        <p>You <span :style="{ color: AV.User.current().get('usage').gas.current > 200 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').gas.current > 200 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 200 Ccf</p>
+                    </div>
+                    <div style="border-left: 1px solid lightgrey;">
+                        <p>EcoScore</p>
+                        <p class="home__utility__info__score">
+                            <span style="font-size: 28pt;">{{ AV.User.current().get('usage').gas.score }}</span>
+                            <span> / 40</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     `
 };
 const AppHomeWater = {
     template: `
-        <h1>This is water.</h1>
+        <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Water Usage</span>
+                </div>
+                <div class="titlebar__left" @click="router.back();">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+            <div class="content">
+                <div class="home__utility__graph">
+                    <p>Graph will be here.</p>
+                </div>
+                <div class="home__utility__description">
+                    <div class="home__utility__description__section">
+                        <span class="home__utility__description__text">Current</span>
+                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').water.current > 20 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').water.current }} <span style="font-size: 10pt; font-weight: normal;">gal</span></span>
+                    </div>
+                    <div class="home__utility__description__section">
+                        <span class="home__utility__description__text">Est. Cost</span>
+                        <span class="home__utility__description__number">\${{ AV.User.current().get('usage').water.cost.toFixed(2) }}</span>
+                    </div>
+                </div>
+                <hr>
+                <div class="home__utility__bar">
+                    <p> Bar will go here</p>
+                </div>
+                <div class="home__utility__info">
+                    <div>
+                        <p>EcoLimit</p>
+                        <p>You <span :style="{ color: AV.User.current().get('usage').water.current > 20 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').water.current > 20 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 20 gal</p>
+                    </div>
+                    <div style="border-left: 1px solid lightgrey;">
+                        <p>EcoScore</p>
+                        <p class="home__utility__info__score">
+                            <span style="font-size: 28pt;">{{ AV.User.current().get('usage').water.score }}</span>
+                            <span> / 40</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     `
 };
 const AppHome = {

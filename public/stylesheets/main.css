@@ -169,7 +169,6 @@ hr {
     fill: none;
     stroke: #49a187;
     stroke-width: 10px;
-    stroke-dasharray: 606.86 335.62; /* 942.478 */
     stroke-dashoffset: 589.049;
     stroke-linecap: round;
 }
@@ -245,16 +244,44 @@ hr {
     position: relative;
     height: 240px;
 }
+.home__utility__description {
+    display: table;
+    width: 100%;
+}
+.home__utility__description__section {
+    float: left;
+    width: 50%;
+    padding: 16px;
+}
+.home__utility__description__section:nth-of-type(2) {
+    text-align: right;
+}
+.home__utility__description__text {
+    font-size: 9pt;
+    text-transform: uppercase;
+}
+.home__utility__description__number {
+    font-size: 16pt;
+    font-weight: bold;
+}
 .home__utility__bar {
     height: 72px;
 }
 .home__utility__info {
     display: table;
+    padding-bottom: 24px;
 }
 .home__utility__info div {
     float: left;
     width: 50%;
-    line-height: 36px;
+    padding: 0 16px;
+    font-size: 9pt;
+    text-align: center;
+}
+.home__utility__info__score {
+    font-size: 16pt;
+    margin: 0;
+    color: #49a187;
 }
 #social__searchbar {
     background-color: #fff;
