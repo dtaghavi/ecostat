@@ -73,7 +73,7 @@ const AppHomeElectricity = {
                 <div class="titlebar__title">
                     <span>Energy Usage</span>
                 </div>
-                <div class="titlebar__left" @click="router.push('/home');">
+                <div class="titlebar__left" @click="router.back();">
                     <i class="fas fa-angle-left">
                 </div>
             </div>
@@ -212,7 +212,7 @@ const AppSocialResults = {
                 <div class="titlebar__title">
                     <span>Search Results</span>
                 </div>
-                <div class="titlebar__left" @click="router.push('/social');">
+                <div class="titlebar__left" @click="router.back();">
                     <i class="fas fa-angle-left">
                 </div>
             </div>
@@ -400,27 +400,27 @@ const AppTipsHome = {
             <div class="content">
                 <p class="tips__subtitle">Featured Tips</p>
                 <div id="tips__featured-tips">
-                    <div v-for="tip of tips" class="tips__featured-tip">
-                        <div class="tips__featured-tip__card" :style="{ backgroundImage: 'url(' + tip.get('image').url() + ')' }"></div>
+                    <div v-for="tip of tips" class="tips__featured-tip" @click="router.push('/tips/tip/' + tip.id);">
+                        <div class="tips__featured-tip__card" :style="{ backgroundImage: 'url(' + (tip.get('image') ? tip.get('image').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y') + ')' }"></div>
                         <span>{{ tip.get('title') }}</span>
                     </div>
                 </div>
                 <hr>
                 <p class="tips__subtitle">Tips by Utility</p>
                 <div id="tips__utilities">
-                    <div class="tips__utility" @click="router.push('/tips/utility/water');">
+                    <div class="tips__utility" @click="router.push('/tips/utility/Water');">
                         <div class="tips__utility__card">
                             <i class="fas fa-tint"></i>
                         </div>
                         <span>Water</span>
                     </div>
-                    <div class="tips__utility" @click="router.push('/tips/utility/gas');">
+                    <div class="tips__utility" @click="router.push('/tips/utility/Gas');">
                         <div class="tips__utility__card">
                             <i class="fas fa-fire"></i>
                         </div>
                         <span>Gas</span>
                     </div>
-                    <div class="tips__utility" @click="router.push('/tips/utility/electricity');">
+                    <div class="tips__utility" @click="router.push('/tips/utility/Electricity');">
                         <div class="tips__utility__card">
                             <i class="fas fa-bolt"></i>
                         </div>
@@ -438,6 +438,7 @@ const AppTipsHome = {
     created: function () {
         let vm = this;
         let tipQuery = new AV.Query('Tip');
+        tipQuery.descending('createdAt');
         tipQuery.find().then(function (tips) {
             vm.tips = tips;
         });
@@ -446,25 +447,72 @@ const AppTipsHome = {
 const AppTipsUtility = {
     template: `
         <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>{{ $route.params.name }} Tips</span>
+                </div>
+                <div class="titlebar__left" @click="router.back();">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+            <div class="content">
+                <div v-for="tip of tips" class="utility__tip" @click="router.push('/tips/tip/' + tip.id);">
+                    <div :style="{ backgroundImage: 'url(' + (tip.get('image') ? tip.get('image').url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y') + ')' }"></div>
+                    <h1>{{ tip.get('title') }}</h1>
+                    <hr>
+                </div>
+            </div>
         </div>
     `,
     data: function () {
         return {
             tips: []
         };
+    },
+    created: function () {
+        let vm = this;
+        let tipQuery = new AV.Query('Tip');
+        tipQuery.equalTo('utility', vm.$route.params.name);
+        tipQuery.descending('createdAt');
+        tipQuery.find().then(function (tips) {
+            vm.tips = tips;
+        });
     }
 };
 const AppTipsTip = {
     template: `
         <div>
+            <div class="titlebar">
+                <div class="titlebar__title">
+                    <span>Tip</span>
+                </div>
+                <div class="titlebar__left" @click="router.back();">
+                    <i class="fas fa-angle-left">
+                </div>
+            </div>
+            <div class="content">
+                <div id="tip__image" :style="{ backgroundImage: 'url(' + (image ? image.url() : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y') + ')' }"></div>
+                <div id="tip__content">
+                    <h1>{{ title }}</h1>
+                    <p>{{ content }}</p>
+                </div>
+            </div>
         </div>
     `,
     data: function () {
         return {
-            image: '',
+            image: new AV.File(),
             title: '',
             content: ''
         };
+    },
+    created: function () {
+        let vm = this;
+        new AV.Query('Tip').get(vm.$route.params.id).then(function (tip) {
+            vm.image = tip.get('image');
+            vm.title = tip.get('title');
+            vm.content = tip.get('content');
+        });
     }
 };
 const AppTips = {
@@ -583,7 +631,7 @@ const AppProfileSettings = {
                 <div class="titlebar__title">
                     <span>Settings</span>
                 </div>
-                <div class="titlebar__left" @click="router.push('/profile');">
+                <div class="titlebar__left" @click="router.back();">
                     <i class="fas fa-angle-left">
                 </div>
                 <div style="font-size: 12pt; width: unset; right: 12px;" class="titlebar__right">
@@ -814,11 +862,11 @@ const router = new VueRouter({
                     component: AppTipsHome
                 },
                 {
-                    path: '/utility/:name',
+                    path: 'utility/:name',
                     component: AppTipsUtility
                 },
                 {
-                    path: '/tip/:id',
+                    path: 'tip/:id',
                     component: AppTipsTip
                 }
             ]

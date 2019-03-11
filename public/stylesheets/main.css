@@ -364,6 +364,9 @@ hr {
     overflow-x: scroll;
     white-space: nowrap;
 }
+#tips__featured-tips::-webkit-scrollbar {
+    display: none;
+}
 .tips__featured-tip {
     margin: 0 0 0 16px;
     display: inline-block;
@@ -420,6 +423,38 @@ hr {
     text-align: center;
     color: #333;
     line-height: 24px;
+}
+.utility__tip {
+    position: relative;
+    height: 160px;
+}
+.utility__tip div {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 128px;
+    height: 128px;
+    background-size: cover;
+    border-radius: 4px;
+}
+.utility__tip h1 {
+    top: 32px;
+    right: 16px;
+    left: 160px;
+    position: absolute;
+    font-size: 14pt;
+}
+#tip__image {
+    width: 100%;
+    height: 256px;
+    background-size: cover;
+}
+#tip__content {
+    padding: 16px;
+    color: #333;
+}
+#tip__content h1 {
+    font-size: 14pt;
 }
 .profile__header {
     position: relative;
