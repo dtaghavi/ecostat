@@ -76,7 +76,7 @@ const AppHomeElectricity = {
         <div>
             <div class="titlebar">
                 <div class="titlebar__title">
-                    <span>Energy Usage</span>
+                    <span>Electricity Usage</span>
                 </div>
                 <div class="titlebar__left" @click="router.back();">
                     <i class="fas fa-angle-left">
@@ -98,7 +98,29 @@ const AppHomeElectricity = {
                 </div>
                 <hr>
                 <div class="home__utility__bar">
-                    <p> Bar will go here</p>
+                    <div class="home__utility__bar__tags__up">
+                        <span class="home__utility__bar__tags__up__current" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').electricity.current / 9, 1) * 100 + '% - 24px)' }">Current</span>
+                    </div>
+                    <div class="home__utility__bar__chart">
+                        <div class="home__utility__bar__allocated" :style="{ width: Math.min(9 / AV.User.current().get('usage').electricity.current, 1) * 100 + '%' }">
+                            <div class="home__utility__bar__allocated__bar">
+                                <div class="home__utility__bar__allocated__bar__content" :style="{ width: Math.min(AV.User.current().get('usage').electricity.current / 9, 1) * 100 + '%' }"></div>
+                            </div>
+                        </div>
+                        <div class="home__utility__bar__extra" :style="{ width: Math.max((AV.User.current().get('usage').electricity.current - 9) / AV.User.current().get('usage').electricity.current, 0) * 100 + '%' }">
+                            <div class="home__utility__bar__extra__bar">
+                                <div class="home__utility__bar__extra__bar__content"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home__utility__bar__tags__bottom">
+                        <span class="home__utility__bar__tags__bottom__arrow" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').electricity.current / 9, 1) * 100 + '% - 24px)' }">
+                            <i class="fas fa-caret-up"></i>
+                        </span>
+                        <span class="home__utility__bar__tags__bottom__zero">0 kWh</span>
+                        <span class="home__utility__bar__tags__bottom__current" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').electricity.current / 9, 1) * 100 + '% - 24px)' }">{{ AV.User.current().get('usage').electricity.current }}</span>
+                        <span class="home__utility__bar__tags__bottom__limit" :style="{ left: 'calc(' + Math.min(9 / AV.User.current().get('usage').electricity.current, 1) * 100 + '% - 24px)' }">9</span>
+                    </div>
                 </div>
                 <div class="home__utility__info">
                     <div>
@@ -144,7 +166,29 @@ const AppHomeGas = {
                 </div>
                 <hr>
                 <div class="home__utility__bar">
-                    <p> Bar will go here</p>
+                    <div class="home__utility__bar__tags__up">
+                        <span class="home__utility__bar__tags__up__current" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').gas.current / 200, 1) * 100 + '% - 24px)' }">Current</span>
+                    </div>
+                    <div class="home__utility__bar__chart">
+                        <div class="home__utility__bar__allocated" :style="{ width: Math.min(200 / AV.User.current().get('usage').gas.current, 1) * 100 + '%' }">
+                            <div class="home__utility__bar__allocated__bar">
+                                <div class="home__utility__bar__allocated__bar__content" :style="{ width: Math.min(AV.User.current().get('usage').gas.current / 200, 1) * 100 + '%' }"></div>
+                            </div>
+                        </div>
+                        <div class="home__utility__bar__extra" :style="{ width: Math.max((AV.User.current().get('usage').gas.current - 200) / AV.User.current().get('usage').gas.current, 0) * 100 + '%' }">
+                            <div class="home__utility__bar__extra__bar">
+                                <div class="home__utility__bar__extra__bar__content"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home__utility__bar__tags__bottom">
+                        <span class="home__utility__bar__tags__bottom__arrow" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').gas.current / 200, 1) * 100 + '% - 24px)' }">
+                            <i class="fas fa-caret-up"></i>
+                        </span>
+                        <span class="home__utility__bar__tags__bottom__zero">0 Ccf</span>
+                        <span class="home__utility__bar__tags__bottom__current" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').gas.current / 200, 1) * 100 + '% - 24px)' }">{{ AV.User.current().get('usage').gas.current }}</span>
+                        <span class="home__utility__bar__tags__bottom__limit" :style="{ left: 'calc(' + Math.min(200 / AV.User.current().get('usage').gas.current, 1) * 100 + '% - 24px)' }">200</span>
+                    </div>
                 </div>
                 <div class="home__utility__info">
                     <div>
@@ -190,7 +234,29 @@ const AppHomeWater = {
                 </div>
                 <hr>
                 <div class="home__utility__bar">
-                    <p> Bar will go here</p>
+                    <div class="home__utility__bar__tags__up">
+                        <span class="home__utility__bar__tags__up__current" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').water.current / 20, 1) * 100 + '% - 24px)' }">Current</span>
+                    </div>
+                    <div class="home__utility__bar__chart">
+                        <div class="home__utility__bar__allocated" :style="{ width: Math.min(20 / AV.User.current().get('usage').water.current, 1) * 100 + '%' }">
+                            <div class="home__utility__bar__allocated__bar">
+                                <div class="home__utility__bar__allocated__bar__content" :style="{ width: Math.min(AV.User.current().get('usage').water.current / 20, 1) * 100 + '%' }"></div>
+                            </div>
+                        </div>
+                        <div class="home__utility__bar__extra" :style="{ width: Math.max((AV.User.current().get('usage').water.current - 20) / AV.User.current().get('usage').water.current, 0) * 100 + '%' }">
+                            <div class="home__utility__bar__extra__bar">
+                                <div class="home__utility__bar__extra__bar__content"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home__utility__bar__tags__bottom">
+                        <span class="home__utility__bar__tags__bottom__arrow" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').water.current / 20, 1) * 100 + '% - 24px)' }">
+                            <i class="fas fa-caret-up"></i>
+                        </span>
+                        <span class="home__utility__bar__tags__bottom__zero">0 gal</span>
+                        <span class="home__utility__bar__tags__bottom__current" :style="{ left: 'calc(' + Math.min(AV.User.current().get('usage').water.current / 20, 1) * 100 + '% - 24px)' }">{{ AV.User.current().get('usage').water.current }}</span>
+                        <span class="home__utility__bar__tags__bottom__limit" :style="{ left: 'calc(' + Math.min(20 / AV.User.current().get('usage').water.current, 1) * 100 + '% - 24px)' }">20</span>
+                    </div>
                 </div>
                 <div class="home__utility__info">
                     <div>
@@ -826,27 +892,27 @@ const AppProfileSettings = {
                 <div>
                     <div class="settings__item">
                         <span class="settings__item__name">First Name</span>
-                        <input class="settings__item__value" v-model="firstName"></input>
+                        <input v-model="firstName"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Last Name</span>
-                        <input class="settings__item__value" v-model="lastName"></input>
+                        <input v-model="lastName"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Email</span>
-                        <input class="settings__item__value" v-model="email"></input>
+                        <input v-model="email"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Phone Number</span>
-                        <input class="settings__item__value" v-model="mobilePhoneNumber"></input>
+                        <input v-model="mobilePhoneNumber"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Household Size</span>
-                        <input class="settings__item__value" :value="householdSize" @input="householdSize = parseInt($event.target.value) || 0;"></input>
+                        <input :value="householdSize" @input="householdSize = parseInt($event.target.value) || 0;"></input>
                     </div>
                     <hr>
                     <div class="settings__item" @click="changePassword();">
@@ -879,17 +945,17 @@ const AppProfileSettings = {
                 <div>
                     <div class="settings__item">
                         <span class="settings__item__name">Water Tracker 2.0</span>
-                        <input class="settings__item__value" v-model="waterID"></input>
+                        <input v-model="waterID"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Gas Monitor</span>
-                        <input class="settings__item__value" v-model="gasID"></input>
+                        <input v-model="gasID"></input>
                     </div>
                     <hr>
                     <div class="settings__item">
                         <span class="settings__item__name">Electricity Monitor</span>
-                        <input class="settings__item__value" v-model="electricID"></input>
+                        <input v-model="electricID"></input>
                     </div>
                     <hr>
                 </div>

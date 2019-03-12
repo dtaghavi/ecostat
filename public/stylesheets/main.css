@@ -7,6 +7,7 @@
 }
 body {
     margin: 0;
+    color: #333;
 }
 a {
     text-decoration: none;
@@ -265,10 +266,106 @@ hr {
     font-weight: bold;
 }
 .home__utility__bar {
-    height: 72px;
+    position: relative;
+    margin: 0 24px;
+    height: 84px;
+}
+.home__utility__bar__tags__up {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 24px;
+    font-size: 8pt;
+    line-height: 24px;
+}
+.home__utility__bar__tags__up__current {
+    position: absolute;
+    width: 48px;
+    text-align: center;
+}
+.home__utility__bar__allocated {
+    position: absolute;
+    top: 24px;
+    bottom: 24px;
+    left: 0;
+    border-right: 1px solid #333;
+}
+.home__utility__bar__allocated__bar {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    bottom: 12px;
+    left: 0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.home__utility__bar__allocated__bar__content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(-135deg, #49a187, #9edd99);
+}
+.home__utility__bar__extra {
+    position: absolute;
+    top: 24px;
+    right: 0;
+    bottom: 24px;
+}
+.home__utility__bar__extra__bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 12px;
+    left: 4px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.home__utility__bar__extra__bar__content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: red;
+}
+.home__utility__bar__tags__bottom {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 24px;
+    font-size: 9pt;
+    line-height: 24px;
+}
+.home__utility__bar__tags__bottom__arrow {
+    position: absolute;
+    top: -16px;
+    font-size: 18pt;
+    width: 48px;
+    text-align: center;
+}
+.home__utility__bar__tags__bottom__zero {
+    position: absolute;
+    left: 0;
+    color: #999;
+}
+.home__utility__bar__tags__bottom__current {
+    position: absolute;
+    width: 48px;
+    text-align: center;
+}
+.home__utility__bar__tags__bottom__limit {
+    position: absolute;
+    width: 48px;
+    text-align: center;
 }
 .home__utility__info {
     display: table;
+    width: 100%;
     padding-bottom: 24px;
 }
 .home__utility__info div {
@@ -389,7 +486,6 @@ hr {
 .tips__featured-tip p {
     font-weight: bold;
     width: 256px;
-    color: #333;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -428,7 +524,6 @@ hr {
     display: inline-block;
     width: 100%;
     text-align: center;
-    color: #333;
     line-height: 24px;
 }
 .utility__tip {
@@ -458,7 +553,6 @@ hr {
 }
 #tip__content {
     padding: 16px;
-    color: #333;
 }
 #tip__content h1 {
     font-size: 14pt;
@@ -548,11 +642,11 @@ hr {
     padding: 12px;
     position: relative;
 }
-.settings__item__value {
+.settings__item input {
     float: right;
     color: #333;
     text-align: right;
-    border: 0;
+    border: none;
     font-size: 12pt;
     outline: none;
     width: 50%;

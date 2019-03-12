@@ -24,6 +24,7 @@ input {
     border: none;
     background-color: rgba(255, 255, 255, 0.8);
     font-size: 12pt;
+    color: #333;
 }
 button {
     outline: none;
