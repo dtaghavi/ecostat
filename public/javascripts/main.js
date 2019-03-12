@@ -83,13 +83,13 @@ const AppHomeElectricity = {
                 </div>
             </div>
             <div class="content">
-                <div class="home__utility__graph">
-                    <p>Graph will be here.</p>
-                </div>
+                <h2 style="margin: 16px 16px 0 16px; font-size: 14pt;">This Month</h2>
+                <div id="home__utility__graph"></div>
+                <h2 style="margin: 16px 16px 0 16px; font-size: 14pt;">Today</h2>
                 <div class="home__utility__description">
                     <div class="home__utility__description__section">
                         <span class="home__utility__description__text">Current</span>
-                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').electricity.current > 9 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').electricity.current }} <span style="font-size: 10pt; font-weight: normal;">kWh</span></span>
+                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').electricity.current > 9 ? '#ff4d4f' : '#49a187' }">{{ AV.User.current().get('usage').electricity.current }} <span style="font-size: 10pt; font-weight: normal;">kWh</span></span>
                     </div>
                     <div class="home__utility__description__section">
                         <span class="home__utility__description__text">Est. Cost</span>
@@ -125,7 +125,7 @@ const AppHomeElectricity = {
                 <div class="home__utility__info">
                     <div>
                         <p>EcoLimit</p>
-                        <p>You <span :style="{ color: AV.User.current().get('usage').electricity.current > 9 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').electricity.current > 9 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 9 kWh</p>
+                        <p>You <span :style="{ color: AV.User.current().get('usage').electricity.current > 9 ? '#ff4d4f' : '#49a187' }">{{ AV.User.current().get('usage').electricity.current > 9 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 9 kWh</p>
                     </div>
                     <div style="border-left: 1px solid lightgrey;">
                         <p>EcoScore</p>
@@ -137,7 +137,87 @@ const AppHomeElectricity = {
                 </div>
             </div>
         </div>
-    `
+    `,
+    data: function () {
+        return {
+            data: [
+                { day: '1', usage: 0 },
+                { day: '2', usage: 0 },
+                { day: '3', usage: 0 },
+                { day: '4', usage: 0 },
+                { day: '5', usage: 0 },
+                { day: '6', usage: 0 },
+                { day: '7', usage: 0 },
+                { day: '8', usage: 0 },
+                { day: '9', usage: 0 },
+                { day: '10', usage: 0 },
+                { day: '11', usage: 0 },
+                { day: '12', usage: 0 },
+                { day: '13', usage: 0 },
+                { day: '14', usage: 0 },
+                { day: '15', usage: 0 },
+                { day: '16', usage: 0 },
+                { day: '17', usage: 0 },
+                { day: '18', usage: 0 },
+                { day: '19', usage: 0 },
+                { day: '20', usage: 0 },
+                { day: '21', usage: 0 },
+                { day: '22', usage: 0 },
+                { day: '23', usage: 0 },
+                { day: '24', usage: 0 },
+                { day: '25', usage: 0 },
+                { day: '26', usage: 0 },
+                { day: '27', usage: 0 },
+                { day: '28', usage: 0 },
+                { day: '29', usage: 0 },
+                { day: '30', usage: 0 },
+                { day: '31', usage: 0 }
+            ]
+        };
+    },
+    created: function () {
+        let vm = this;
+        vm.data = AV.User.current().get('usage').electricity.daily;
+    },
+    mounted: function () {
+        let vm = this;
+        const chart = new G2.Chart({
+            container: 'home__utility__graph',
+            height: 240,
+            forceFit: true,
+            padding: [16, 24, 24, 16]
+        });
+        chart.source(vm.data);
+        chart.axis('day', {
+            label: {
+                textStyle: {
+                    fill: '#ccc',
+                    fontSize: '10'
+                }
+            },
+            tickLine: {
+                alignWithLabel: false,
+                length: 0
+            }
+        });
+        chart.axis('usage', {
+            position: 'right',
+            label: {
+                textStyle: {
+                    fill: '#ccc',
+                    fontSize: '10'
+                }
+            }
+        });
+        chart.legend(false);
+        chart.interval().position('day*usage').color('usage', function (val) {
+            if (val > 9) {
+                return '#ff4d4f';
+            }
+            return '#49a187';
+        });
+        chart.render();
+    }
 };
 const AppHomeGas = {
     template: `
@@ -151,13 +231,13 @@ const AppHomeGas = {
                 </div>
             </div>
             <div class="content">
-                <div class="home__utility__graph">
-                    <p>Graph will be here.</p>
-                </div>
+                <h2 style="margin: 16px 16px 0 16px; font-size: 14pt;">This Month</h2>
+                <div id="home__utility__graph"></div>
+                <h2 style="margin: 16px 16px 0 16px; font-size: 14pt;">Today</h2>
                 <div class="home__utility__description">
                     <div class="home__utility__description__section">
                         <span class="home__utility__description__text">Current</span>
-                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').gas.current > 200 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').gas.current }} <span style="font-size: 10pt; font-weight: normal;">Ccf</span></span>
+                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').gas.current > 200 ? '#ff4d4f' : '#49a187' }">{{ AV.User.current().get('usage').gas.current }} <span style="font-size: 10pt; font-weight: normal;">Ccf</span></span>
                     </div>
                     <div class="home__utility__description__section">
                         <span class="home__utility__description__text">Est. Cost</span>
@@ -193,7 +273,7 @@ const AppHomeGas = {
                 <div class="home__utility__info">
                     <div>
                         <p>EcoLimit</p>
-                        <p>You <span :style="{ color: AV.User.current().get('usage').gas.current > 200 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').gas.current > 200 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 200 Ccf</p>
+                        <p>You <span :style="{ color: AV.User.current().get('usage').gas.current > 200 ? '#ff4d4f' : '#49a187' }">{{ AV.User.current().get('usage').gas.current > 200 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 200 Ccf</p>
                     </div>
                     <div style="border-left: 1px solid lightgrey;">
                         <p>EcoScore</p>
@@ -205,7 +285,87 @@ const AppHomeGas = {
                 </div>
             </div>
         </div>
-    `
+    `,
+    data: function () {
+        return {
+            data: [
+                { day: '1', usage: 0 },
+                { day: '2', usage: 0 },
+                { day: '3', usage: 0 },
+                { day: '4', usage: 0 },
+                { day: '5', usage: 0 },
+                { day: '6', usage: 0 },
+                { day: '7', usage: 0 },
+                { day: '8', usage: 0 },
+                { day: '9', usage: 0 },
+                { day: '10', usage: 0 },
+                { day: '11', usage: 0 },
+                { day: '12', usage: 0 },
+                { day: '13', usage: 0 },
+                { day: '14', usage: 0 },
+                { day: '15', usage: 0 },
+                { day: '16', usage: 0 },
+                { day: '17', usage: 0 },
+                { day: '18', usage: 0 },
+                { day: '19', usage: 0 },
+                { day: '20', usage: 0 },
+                { day: '21', usage: 0 },
+                { day: '22', usage: 0 },
+                { day: '23', usage: 0 },
+                { day: '24', usage: 0 },
+                { day: '25', usage: 0 },
+                { day: '26', usage: 0 },
+                { day: '27', usage: 0 },
+                { day: '28', usage: 0 },
+                { day: '29', usage: 0 },
+                { day: '30', usage: 0 },
+                { day: '31', usage: 0 }
+            ]
+        };
+    },
+    created: function () {
+        let vm = this;
+        vm.data = AV.User.current().get('usage').gas.daily;
+    },
+    mounted: function () {
+        let vm = this;
+        const chart = new G2.Chart({
+            container: 'home__utility__graph',
+            height: 240,
+            forceFit: true,
+            padding: [16, 24, 24, 16]
+        });
+        chart.source(vm.data);
+        chart.axis('day', {
+            label: {
+                textStyle: {
+                    fill: '#ccc',
+                    fontSize: '10'
+                }
+            },
+            tickLine: {
+                alignWithLabel: false,
+                length: 0
+            }
+        });
+        chart.axis('usage', {
+            position: 'right',
+            label: {
+                textStyle: {
+                    fill: '#ccc',
+                    fontSize: '10'
+                }
+            }
+        });
+        chart.legend(false);
+        chart.interval().position('day*usage').color('usage', function (val) {
+            if (val > 200) {
+                return '#ff4d4f';
+            }
+            return '#49a187';
+        });
+        chart.render();
+    }
 };
 const AppHomeWater = {
     template: `
@@ -219,13 +379,13 @@ const AppHomeWater = {
                 </div>
             </div>
             <div class="content">
-                <div class="home__utility__graph">
-                    <p>Graph will be here.</p>
-                </div>
+                <h2 style="margin: 16px 16px 0 16px; font-size: 14pt;">This Month</h2>
+                <div id="home__utility__graph"></div>
+                <h2 style="margin: 16px 16px 0 16px; font-size: 14pt;">Today</h2>
                 <div class="home__utility__description">
                     <div class="home__utility__description__section">
                         <span class="home__utility__description__text">Current</span>
-                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').water.current > 20 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').water.current }} <span style="font-size: 10pt; font-weight: normal;">gal</span></span>
+                        <span class="home__utility__description__number" :style="{ color: AV.User.current().get('usage').water.current > 20 ? '#ff4d4f' : '#49a187' }">{{ AV.User.current().get('usage').water.current }} <span style="font-size: 10pt; font-weight: normal;">gal</span></span>
                     </div>
                     <div class="home__utility__description__section">
                         <span class="home__utility__description__text">Est. Cost</span>
@@ -261,7 +421,7 @@ const AppHomeWater = {
                 <div class="home__utility__info">
                     <div>
                         <p>EcoLimit</p>
-                        <p>You <span :style="{ color: AV.User.current().get('usage').water.current > 20 ? 'red' : '#49a187' }">{{ AV.User.current().get('usage').water.current > 20 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 20 gal</p>
+                        <p>You <span :style="{ color: AV.User.current().get('usage').water.current > 20 ? '#ff4d4f' : '#49a187' }">{{ AV.User.current().get('usage').water.current > 20 ? 'have exceeded' : 'are within' }}</span> your recommended daily usage of 20 gal</p>
                     </div>
                     <div style="border-left: 1px solid lightgrey;">
                         <p>EcoScore</p>
@@ -273,7 +433,87 @@ const AppHomeWater = {
                 </div>
             </div>
         </div>
-    `
+    `,
+    data: function () {
+        return {
+            data: [
+                { day: '1', usage: 0 },
+                { day: '2', usage: 0 },
+                { day: '3', usage: 0 },
+                { day: '4', usage: 0 },
+                { day: '5', usage: 0 },
+                { day: '6', usage: 0 },
+                { day: '7', usage: 0 },
+                { day: '8', usage: 0 },
+                { day: '9', usage: 0 },
+                { day: '10', usage: 0 },
+                { day: '11', usage: 0 },
+                { day: '12', usage: 0 },
+                { day: '13', usage: 0 },
+                { day: '14', usage: 0 },
+                { day: '15', usage: 0 },
+                { day: '16', usage: 0 },
+                { day: '17', usage: 0 },
+                { day: '18', usage: 0 },
+                { day: '19', usage: 0 },
+                { day: '20', usage: 0 },
+                { day: '21', usage: 0 },
+                { day: '22', usage: 0 },
+                { day: '23', usage: 0 },
+                { day: '24', usage: 0 },
+                { day: '25', usage: 0 },
+                { day: '26', usage: 0 },
+                { day: '27', usage: 0 },
+                { day: '28', usage: 0 },
+                { day: '29', usage: 0 },
+                { day: '30', usage: 0 },
+                { day: '31', usage: 0 }
+            ]
+        };
+    },
+    created: function () {
+        let vm = this;
+        vm.data = AV.User.current().get('usage').water.daily;
+    },
+    mounted: function () {
+        let vm = this;
+        const chart = new G2.Chart({
+            container: 'home__utility__graph',
+            height: 240,
+            forceFit: true,
+            padding: [16, 24, 24, 16]
+        });
+        chart.source(vm.data);
+        chart.axis('day', {
+            label: {
+                textStyle: {
+                    fill: '#ccc',
+                    fontSize: '10'
+                }
+            },
+            tickLine: {
+                alignWithLabel: false,
+                length: 0
+            }
+        });
+        chart.axis('usage', {
+            position: 'right',
+            label: {
+                textStyle: {
+                    fill: '#ccc',
+                    fontSize: '10'
+                }
+            }
+        });
+        chart.legend(false);
+        chart.interval().position('day*usage').color('usage', function (val) {
+            if (val > 20) {
+                return '#ff4d4f';
+            }
+            return '#49a187';
+        });
+        chart.render();
+    }
 };
 const AppHome = {
     template: `
@@ -921,7 +1161,7 @@ const AppProfileSettings = {
                     </div>
                     <hr>
                     <div class="settings__item" @click="logOut();">
-                        <span style="color: red; text-transform: uppercase;" class="settings__item__name">Log Out</span>
+                        <span style="color: #ff4d4f; text-transform: uppercase;" class="settings__item__name">Log Out</span>
                     </div>
                 </div>
                 <p class="settings__subtitle">Privacy</p>

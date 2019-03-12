@@ -241,7 +241,7 @@ hr {
 .home__card__item__score__my {
     font-size: 18pt;
 }
-.home__utility__graph {
+#home__utility__graph {
     position: relative;
     height: 240px;
 }
@@ -330,7 +330,7 @@ hr {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: red;
+    background-color: #ff4d4f;
 }
 .home__utility__bar__tags__bottom {
     position: absolute;
